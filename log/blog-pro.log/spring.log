@@ -1,0 +1,5 @@
+2021-03-13 22:25:57.205  INFO 8528 --- [restartedMain] com.zhong.BlogApplication                : Starting BlogApplication using Java 1.8.0_111 on zzh with PID 8528 (D:\ideaProject\blog\target\classes started by cc in D:\ideaProject\blog)
+2021-03-13 22:25:57.207  INFO 8528 --- [restartedMain] com.zhong.BlogApplication                : The following profiles are active: pro
+2021-03-13 22:25:59.750  WARN 8528 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-13 22:25:59.969  WARN 8528 --- [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2021-03-13 22:26:00.115  INFO 8528 --- [restartedMain] com.zhong.BlogApplication                : Started BlogApplication in 3.431 seconds (JVM running for 4.303)
