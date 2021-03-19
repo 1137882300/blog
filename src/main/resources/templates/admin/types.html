@@ -6,14 +6,14 @@
   <meta charset="UTF-8">
   <!-- 移动端的设置 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>博客管理</title>
+  <title>分类管理</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
 </head>
 <body>
 
   <!--导航-->
-  <nav th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+  <nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
       <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
         <h2 class="ui teal header item">管理后台</h2>
@@ -47,74 +47,43 @@
         <a href="#" class="item">发布</a>
         <a href="#" class="active teal item">列表</a>
       </div>
-
     </div>
-
   </div>
 
   <!--中间内容-->
   <div class="m-container-small m-padded-tb-big">
     <div class="ui container">
-      <form action="#" method="post" class="ui segment form">
-        <div class="inline fields">
-          <div class="field">
-            <input type="text" name="title" placeholder="标题">
-          </div>
-          <div class="field">
-            <div class="ui selection dropdown">
-              <input type="hidden" name="type">
-              <i class="icon dropdown"></i>
-              <div class="default text">分类</div>
-              <div class="menu">
-                <div class="item" data-value="1">错误日志</div>
-                <div class="item" data-value="1">开发者手册</div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" id="recommend" name="recommend">
-              <label for="recommend">推荐</label>
-            </div>
-          </div>
-          <div class="field">
-            <button class="ui teal basic mini button"><i class="search icon"></i>搜索</button>
-          </div>
-        </div>
-      </form>
-
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">提示：</div>
+        <p th:text="${message}">恭喜，操作成功</p>
+      </div>
       <table class="ui table celled">
         <thead>
           <tr>
             <th></th>
-            <th>标题</th>
-            <th>类型</th>
-            <th>推荐</th>
-            <th>更新时间</th>
+            <th>名称</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>JAVA</td>
-            <td>语言</td>
-            <td>是</td>
-            <td>2021-03-10 22：58</td>
+          <tr th:each="type,iterStat : ${page.content}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${type.name}">JAVA</td>
             <td>
-              <a href="" class="ui mini teal basic button">编辑</a>
-              <a href="" class="ui mini red basic button">删除</a>
+              <a href="" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
+              <a href="" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">删除</a>
             </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="6">
-              <div class="ui pagination menu mini">
-                <a class="item">上一页</a>
-                <a class="item">下一页</a>
+            <th colspan="6" >
+              <div class="ui pagination menu mini" th:if="${page.totalPages}>1">
+                <a th:href="@{/admin/types(page=${page.number}-1)}" class="item" th:unless="${page.first}">上一页</a>
+                <a th:href="@{/admin/types(page=${page.number}+1)}" class="item" th:unless="${page.last}">下一页</a>
               </div>
-              <a href="#" class="ui teal mini right floated  basic button">新增</a>
+              <a href="#" th:href="@{/admin/types/input}" class="ui teal mini right floated  basic button">新增</a>
             </th>
           </tr>
         </tfoot>
@@ -165,6 +134,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
   <!--/*/</th:block>/*/-->
+
   <script>
     /*手机端右上角的小按钮点击展开隐藏*/
     $('.menu.toggle').click(function () {
@@ -175,6 +145,11 @@
     $('.ui.dropdown').dropdown({
       on: 'hover'
     });
+
+    //消息提示关闭初始化
+    $(' .close').on('click',function () {
+      $(this).closest('.message').transition('fade');
+    })
 
   </script>
 </body>
