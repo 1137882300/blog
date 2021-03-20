@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -17,6 +18,7 @@ public class Type {
     @Id//主键
     @GeneratedValue//mysql自动生成
     private Long id;
+    @NotBlank(message = "分类名称不能为空！")
     private String name;
 
     @OneToMany(mappedBy = "type") //1 对多 （1 Type：Blog 多） one 是被维护的一端，需要加上 mappedBy = "type"
