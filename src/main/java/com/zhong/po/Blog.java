@@ -18,6 +18,9 @@ public class Blog {
     @GeneratedValue//mysql自动生成
     private Long id;
     private String title;
+
+    @Basic(fetch = FetchType.LAZY)//懒加载，用的时候才加载
+    @Lob//大字段类型
     private String content;//内容
     private String firstPicture;//首图
     private String flag;//标记
@@ -27,6 +30,7 @@ public class Blog {
     private boolean commentabled;//评论
     private boolean published;//发布
     private boolean recommend;//回复
+
     @Temporal(TemporalType.TIMESTAMP)//关于time的时候，对应到数据库里面需要这个注解
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP) //关于time的时候，对应到数据库里面需要这个注解
@@ -43,6 +47,9 @@ public class Blog {
 
     @OneToMany(mappedBy = "blog") //one折端是被维护端，所以加上 mappedBy = "blog"
     private List<Comment> comments = new ArrayList<>();
+
+    @Transient //不会和数据库映射
+    private String tagIds;
 
     public Blog() {
     }
@@ -182,6 +189,36 @@ public class Blog {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
+
+    public void init(){
+        this.tagIds =  tagsToIds(this.getTags());
+    }
+
+    private String tagsToIds(List<Tag> tags){
+        if (!tags.isEmpty()){
+            StringBuffer ids = new StringBuffer();
+            boolean flag = false;
+            for (Tag tag: tags){
+                if (flag){
+                    ids.append(",");
+                }else {
+                    flag = true;
+                }
+                ids.append(tag.getId());
+            }
+            return ids.toString();
+        }else {
+            return tagIds;
+        }
     }
 
     @Override
