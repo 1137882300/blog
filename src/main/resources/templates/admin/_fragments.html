@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+
 <!--模板的页面，th:fragment="head(title) ，传参数-->
 <head th:fragment="head(title)">
   <meta charset="UTF-8">
@@ -10,14 +11,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
   <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+  <link rel="shortcut icon" href="../../static/images/blog_favicon.ico" type="image/x-icon" th:href="@{/images/blog_favicon.ico}" />
 </head>
 
 <body>
-<!--导航-->
+<!--复用 导航-->
   <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
     <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
-      <h2 class="ui teal header item">管理后台</h2>
+      <h2 class="ui teal header item"><a th:href="@{/admin}">管理后台</a></h2>
       <a href="#" th:href="@{/admin/blogs}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i>博客</a>
       <a href="#" th:href="@{/admin/types}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="idea icon"></i>分类</a>
       <a href="#" th:href="@{/admin/tags}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="tags icon"></i>标签</a>
@@ -41,7 +43,7 @@
     </a>
 </nav>
 
-<!--底部-->
+<!--复用 底部-->
   <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
   <div class="ui center aligned container">
     <div class="ui inverted divided stackable grid">

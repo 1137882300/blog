@@ -17,7 +17,7 @@ public class Comment {
     private String nickname;
     private String email;
     private String content;
-    private String avater;
+    private String avatar;
     @Temporal(TemporalType.TIMESTAMP) //关于time的时候，对应到数据库里面需要这个注解
     private Date CreateTime;
 
@@ -66,12 +66,12 @@ public class Comment {
         this.content = content;
     }
 
-    public String getAvater() {
-        return avater;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvater(String avater) {
-        this.avater = avater;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getCreateTime() {
@@ -113,7 +113,7 @@ public class Comment {
                 ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
-                ", avater='" + avater + '\'' +
+                ", avater='" + avatar + '\'' +
                 ", CreateTime=" + CreateTime +
                 '}';
     }

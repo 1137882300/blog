@@ -23,7 +23,11 @@ public class LoginController {
     private UserService userService;
 
     @GetMapping
-    public String loginPage(){
+    public String loginPage( HttpSession session){
+        Object user = session.getAttribute("user");
+        if (user !=null){
+            return "admin/index";
+        }
         return "admin/login";
     }
 

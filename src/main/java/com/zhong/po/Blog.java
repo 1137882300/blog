@@ -1,5 +1,7 @@
 package com.zhong.po;
 
+import org.springframework.core.annotation.AliasFor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +33,7 @@ public class Blog {
     private boolean published;//发布
     private boolean recommend;//回复
 
+
     @Temporal(TemporalType.TIMESTAMP)//关于time的时候，对应到数据库里面需要这个注解
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP) //关于time的时候，对应到数据库里面需要这个注解
@@ -50,6 +53,8 @@ public class Blog {
 
     @Transient //不会和数据库映射
     private String tagIds;
+
+    private String description;//描述
 
     public Blog() {
     }
@@ -203,6 +208,14 @@ public class Blog {
         this.tagIds =  tagsToIds(this.getTags());
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     private String tagsToIds(List<Tag> tags){
         if (!tags.isEmpty()){
             StringBuffer ids = new StringBuffer();
@@ -237,6 +250,12 @@ public class Blog {
                 ", recommend=" + recommend +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", type=" + type +
+                ", tags=" + tags +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", tagIds='" + tagIds + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

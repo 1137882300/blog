@@ -7,7 +7,9 @@ import com.zhong.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,8 +36,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getTagByName(String name) {
-        //TODO:
-        return null;
+        return tagRepository.findByName(name);
     }
 
     @Override
@@ -51,6 +52,14 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> listTag(String ids) {//1,2,3
         return tagRepository.findAllById(convertToList(ids));
+    }
+
+    @Override
+    public List<Tag> listTagTop(Integer size) {
+        //TODO: 排序方式要改
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(0, size, sort);
+        return tagRepository.findTagTop(pageable);
     }
 
     //字符串转成数组，在添加到list里去
