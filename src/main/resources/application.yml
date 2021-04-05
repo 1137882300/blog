@@ -3,3 +3,8 @@ spring:
     mode: HTML
   profiles:
     active: dev
+
+  messages:
+    basename: i18n/messages # i18n的配置
+
+comment.avatar: /images/avatar.png

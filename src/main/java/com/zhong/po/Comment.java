@@ -19,7 +19,7 @@ public class Comment {
     private String content;
     private String avatar;
     @Temporal(TemporalType.TIMESTAMP) //关于time的时候，对应到数据库里面需要这个注解
-    private Date CreateTime;
+    private Date createTime;
 
     @ManyToOne
     private Blog blog;
@@ -75,11 +75,11 @@ public class Comment {
     }
 
     public Date getCreateTime() {
-        return CreateTime;
+        return createTime;
     }
 
     public void setCreateTime(Date createTime) {
-        CreateTime = createTime;
+        this.createTime = createTime;
     }
 
     public Blog getBlog() {
@@ -113,8 +113,8 @@ public class Comment {
                 ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
-                ", avater='" + avatar + '\'' +
-                ", CreateTime=" + CreateTime +
+                ", avatar='" + avatar + '\'' +
+                ", createTime=" + createTime +
                 '}';
     }
 }

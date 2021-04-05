@@ -20,7 +20,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String avater;
+    private String avatar;
     private Integer type;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -73,12 +73,12 @@ public class User {
         this.email = email;
     }
 
-    public String getAvater() {
-        return avater;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvater(String avater) {
-        this.avater = avater;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Integer getType() {
@@ -121,7 +121,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", avater='" + avater + '\'' +
+                ", avater='" + avatar + '\'' +
                 ", type=" + type +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

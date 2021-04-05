@@ -3,6 +3,14 @@
 删除都是有bug，牵扯主外键
 前端图片的大小
 
+有问题的
+    /*当页面加载完成*/
+    $(function () {
+      $('#comment-container').load(/*[[@{/comments/{id}}]]*/"comments/6");
+
+    })
+
+
 
 Jpa 写原生sql
 最后一个deleteByAppintmentIds方法是根据传入的一组appointmentid数据删除数据库所有匹配的结果。
