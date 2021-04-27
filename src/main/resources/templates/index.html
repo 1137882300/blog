@@ -69,10 +69,15 @@
                           <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">李文博</a></div>
                         </div>
                         <div class="item">
-                          <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-03-09</span>
+                          <div class="text">
+                            <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-03-09</span>
+                          </div>
                         </div>
                         <div class="item">
-                          <i class="eye icon"></i><span th:text="${blog.views}">1232</span>
+                          <div class="text">
+                            <i class="eye icon"></i><span th:text="${blog.views}">1232</span>
+                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -83,7 +88,7 @@
                 </div>
                 <div class="five wide column">
                   <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
-                    <img src="https://picsum.photos/id/10/800/400" th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
+                    <img src="https://picsum.photos/id/10/800/400" height="100" width="200"  th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
                   </a>
                 </div>
               </div>
@@ -407,6 +412,8 @@
       </div>
     </div>
   </div>
+
+
 
   <!--底部-->
   <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">

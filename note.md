@@ -1,15 +1,32 @@
-40 的18分
+ 
+[bug]
+   1. blog详细页面 滑动侦听 
+   2.  /*当页面加载完成*/
+        $(function () {
+          $('#comment-container').load(/*[[@{/comments/{id}}]]*/"comments/6");
+        })
+   3. 分类下拉框 默认值那个
 
-删除都是有bug，牵扯主外键
-前端图片的大小
+[提示]
+    1. https://picsum.photos/   图片的接口可以用 ，可用于上传图片 
+    
+[功能]
+    1. 点赞
+    2. 关注
+    3. 积分
+    4. 制作二维码分享的h5
+    5. 上传图片，用哪个接口
+    6. 评论 排序问题
+    7. 标签、类型 后端都要加上时间的列
+    8. 签到-》等级和积分都加
+    9. 等级和用户类型是挂钩的
+[注意]
+    1. 删的是状态
 
-有问题的
-    /*当页面加载完成*/
-    $(function () {
-      $('#comment-container').load(/*[[@{/comments/{id}}]]*/"comments/6");
+ parent_comment_id  就是 一个标识  flag ，为null 表示父级，有值表示子级
+ blogID 和 parent_comment_Uid 对应的
 
-    })
-
+只能说：在这片文章里，我评论了你，他回复了我
 
 
 Jpa 写原生sql

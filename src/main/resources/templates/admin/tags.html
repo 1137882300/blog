@@ -83,8 +83,12 @@
           <tr>
             <th colspan="3">
               <div class="ui pagination menu mini" th:if="${page.totalPages}>1">
+              <!--
                 <a onclick="page(this)" th:attr="data-page=${page.number}-1" class="item" th:unless="${page.first}">上一页</a>
                 <a onclick="page(this)" th:attr="data-page=${page.number}+1" class="item" th:unless="${page.last}">下一页</a>
+              -->
+                <a th:href="@{/admin/tags(page=${page.number}-1)}" class="item" th:unless="${page.first}">上一页</a>
+                <a th:href="@{/admin/tags(page=${page.number}+1)}" class="item" th:unless="${page.last}">下一页</a>
               </div>
               <a href="#" th:href="@{/admin/tags/input}" class="ui teal mini right floated basic button">新增</a>
             </th>

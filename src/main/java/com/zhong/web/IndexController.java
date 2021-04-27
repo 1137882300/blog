@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -27,7 +28,7 @@ public class IndexController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/")
+    @GetMapping(value = {"/","/index"})
     public String index(@PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC)
                         Pageable pageable, Model model){ //updateTime  与数据库的不一致可以，因为他是jpa的内置的
         //分页的数据放到 model
@@ -61,5 +62,9 @@ public class IndexController {
 
         return "_fragments :: newblogList";
     }
+
+
+
+
 
 }

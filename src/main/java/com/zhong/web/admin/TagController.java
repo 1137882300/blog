@@ -1,5 +1,6 @@
 package com.zhong.web.admin;
 
+import com.zhong.po.Blog;
 import com.zhong.po.Tag;
 import com.zhong.po.Type;
 import com.zhong.service.TagService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by cc on 2021/3/26
@@ -29,7 +31,7 @@ public class TagController {
     TagService tagService;
 
     @GetMapping("/tags")
-    public String tags(@PageableDefault (size = 3,sort = {"id"},direction = Sort.Direction.ASC)
+    public String tags(@PageableDefault (size = 6,sort = {"id"},direction = Sort.Direction.ASC)
                      Pageable pageable, Model model){
         model.addAttribute("page",tagService.listTag(pageable));
         return "admin/tags";
@@ -90,6 +92,13 @@ public class TagController {
 
     @GetMapping("/tags/{id}/delete")
     public String delete(@PathVariable Long id,RedirectAttributes attributes){
+        //先判断该id有没有关联的博客，再考虑是否删除
+        Tag tag = tagService.getTag(id);
+        List<Blog> boo = tag.getBlogs();
+        if (boo.size() > 0){
+            attributes.addFlashAttribute("message","有关联的博客无法删除！");
+            return "redirect:/admin/tags";
+        }
         tagService.deleteTag(id);
         attributes.addFlashAttribute("message","删除成功");
         return "redirect:/admin/tags";

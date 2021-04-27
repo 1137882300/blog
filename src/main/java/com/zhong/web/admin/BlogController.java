@@ -36,7 +36,7 @@ public class BlogController {
     private TagService tagService;
 
     @GetMapping("/blogs")
-    public String blogs(@PageableDefault(size = 3,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String blogs(@PageableDefault(size = 6,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
                         BlogQuery blog, Model model){
         model.addAttribute("types",typeService.listType());
         model.addAttribute("page",blogService.listBlog(pageable,blog));
@@ -44,7 +44,7 @@ public class BlogController {
     }
 
     @PostMapping("/blogs/search")
-    public String search(@PageableDefault(size = 3,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String search(@PageableDefault(size = 6,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
                          BlogQuery blog, Model model){
         model.addAttribute("page",blogService.listBlog(pageable,blog));
         return "admin/blogs :: blogList";//局部渲染，返回的是blogs页面里的blogList这个一块区域
@@ -73,9 +73,20 @@ public class BlogController {
     }
 
 
+    /**
+     * 获取 写博客 的内容信息
+     * @param blog
+     * @param attributes
+     * @param session
+     * @return
+     */
     @PostMapping("/blogs")
     public String post(Blog blog, RedirectAttributes attributes, HttpSession session){
         blog.setUser((User) session.getAttribute("user"));
+        //判断flag 是否为空
+        if(blog.getFlag() == null || blog.getFlag().equals("")){
+            blog.setFlag("原创");
+        }
         blog.setType(typeService.getType(blog.getType().getId()));
         blog.setTags(tagService.listTag(blog.getTagIds()));
         Blog b;

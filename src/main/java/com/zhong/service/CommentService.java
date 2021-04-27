@@ -11,7 +11,9 @@ public interface CommentService {
 
     List<Comment> listCommentByBlogId(Long blogId);
 
-
     Comment saveComment(Comment comment);
+
+
+    Comment addComment(Comment comment, Long flag);
 
 }

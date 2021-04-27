@@ -96,6 +96,10 @@ body {
     margin-top: 0.3em !important;
     margin-bottom: 0.3em !important;
 }
+.m-margin-tb-small {
+    margin-top: 0.6em !important;
+    margin-bottom: 0.6em !important;
+}
 
 .m-margin-bottom-small {
     margin-bottom: 0.5em !important;
@@ -194,4 +198,10 @@ a:link {
     text-decoration: none !important;
 }
 
+/*吸顶效果*/
+/*#nav {*/
+/*    position: sticky !important;*/
+/*    top: 0 !important;*/
+/*    z-index: 9 !important;*/
+/*}*/
 

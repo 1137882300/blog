@@ -13,12 +13,14 @@
   <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
   <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
   <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+  <link rel="stylesheet" href="../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
 </head>
 
 <body>
 <!--导航-->
   <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
-  <div class="ui container">
+
+    <div class="ui container">
     <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
       <h2 class="ui teal header item">Blog</h2>
       <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i><span th:text="#{nav.index}">首页</span></a>
@@ -26,22 +28,151 @@
       <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="tags icon"></i>标签</a>
       <a href="#" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="clone icon"></i>归档</a>
       <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="info icon"></i>关于我</a>
+
+
       <div class="right m-item item m-mobile-hide">
+        <!--搜索-->
         <form name="search" action="#" th:action="@{/search}" method="post" target="_blank">
           <div class="ui icon inverted transparent input">
             <input type="text" name="query" placeholder="Search..." th:value="${query}">
             <i onclick="document.forms['search'].submit()" class="search link icon"></i>
           </div>
         </form>
+
+        <!--写文章-->
+        <div class="text">
+          <a href="" th:href="@{/user/blog/toBlogInput}" class="m-item item m-mobile-hide">
+            <i class="edit icon"></i><span>写文章</span>
+          </a>
+        </div>
+
+        <!--消息-->
+        <div class="text">
+          <a href="" class="m-item item m-mobile-hide">
+            <i class="bell icon"></i><span>消息</span>
+          </a>
+        </div>
+
+        <!--头像-->
+        <div class=" ui text attached column grid" th:if="${session.user}">
+          <!--下拉框-->
+          <div class="ui simple dropdown item">
+            <!--头像-->
+            <div >
+              <img class="ui avatar image" src="https://picsum.photos/id/200/100/100" th:src="@{${session.user.avatar}}" >
+              <span th:text="${session.user.nickname}">nickname</span>
+            </div>
+            <!--下拉-->
+            <i class="dropdown icon"></i>
+            <div class="ui vertical menu">
+
+                <div class="ui segment">
+
+                    <div class="item">
+                      <span class="text small ">0</span>
+                      <div class="text">文章</div>
+                    </div>
+                    <div class="item">
+                      <span class="text small ">1</span>
+                      <div class="text">关注</div>
+                    </div>
+                    <div class="item">
+                      <span class="text small ">2</span>
+                      <div class="text">粉丝</div>
+                    </div>
+
+                </div>
+
+                <div id="signIn" class="ui teal circular button" onclick="signIn()"><i class="location arrow icon"></i>签到</div>
+
+              <div class="divider"></div>
+              <a href="#" th:href="@{/about}" class="item"><i class="home icon"></i>
+                <span class="text">个人中心</span>
+                <span class="text right floated">普通用户</span>
+              </a>
+              <a href="#" class="item"><i class="user icon"></i>
+                <span class="text">账号</span>
+                <span class="text right floated">201145</span>
+              </a>
+              <a href="#" class="item"><i class="heart icon"></i>
+                <span class="text">喜欢的文章</span>
+                <span class="text right floated">10</span>
+              </a>
+              <a href="#" class="item"><i class="thumbs up icon"></i>
+                <span class="text">我赞过的</span>
+                <span class="text right floated">23</span>
+              </a>
+              <a href="#" class="item"><i class="trophy icon"></i>
+                <span class="text">等级</span>
+                <span class="text right floated" id="grade_integral" th:fragment="grade_integral" th:text="${gradeIntegral}">Lv1</span>
+              </a>
+              <a href="#" class="item"><i class="database icon"></i>
+                <span class="text">积分</span>
+                <span class="text right floated" id="integral_grade" th:fragment="integral_grade" th:text="${integralGrade}">120</span>
+              </a>
+              <a href="#" class="item">
+                <i class="cog icon"></i>
+                <span class="text">个人设置</span>
+                <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+              </a>
+              <div class="divider"></div>
+              <a href="#" th:href="@{/user/logout}" class="item"><i class="sign-out icon"></i>退出</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!--登录，注册-->
+        <div th:if="${session.user == null}">
+          <!--注册-->
+          <div class="text">
+            <a href="" th:href="@{/user/toLogin}" class="m-item m-mobile-hide">
+              <div class="ui inverted login button">登录</div>
+            </a>
+
+            <!--注册-->
+            <a href="" th:href="@{/user/register}" class="m-item m-mobile-hide">
+              <div class="ui inverted login button">注册</div>
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
-    <i class="sidebar icon"></i>
-  </a>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
 
-</nav>
+  </nav>
+
+<div class="ui vertical menu">
+  <div class="item">
+    <div class="menu">
+      <div class="item">
+        <span class="text small ">0</span>
+        <div class="text">文章</div>
+      </div>
+      <div class="item">
+        <span class="text small ">1</span>
+        <div class="text">关注</div>
+      </div>
+      <div class="item">
+        <span class="text small ">2</span>
+        <div class="text">粉丝</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 <!--底部-->
   <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
@@ -86,6 +217,7 @@
 
 </footer>
 
+
 <!--复用 js -->
 <th:block th:fragment="script">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
@@ -94,12 +226,41 @@
   <script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
   <script src="../static/lib/tocbot/tocbot.js" th:src="@{/lib/tocbot/tocbot.js}"></script>
   <script src="../static/lib/qrcode/qrcode.js" th:src="@{/lib/qrcode/qrcode.js}"></script>
+  <script src="../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
   <script src="../static/lib/waypoint/jquery.waypoints.js" th:src="@{/lib/waypoint/jquery.waypoints.js}"></script>
 
   <script>
+    $('#integral_grade').load(/*[[@{/integral/integral_grade}]]*/"/integral/integral_grade");
+    $('#grade_integral').load(/*[[@{/integral/grade_integral}]]*/"/integral/grade_integral");
     $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
   </script>
+  <script>
+    function signIn() {
+      $('#signIn').load(/*[[@{/integral/signIn}]]*/"/integral/signIn",function(response,status,xhr){
+        if(status =="success"){
+          let jsonResult = JSON.parse(response);
+          let grade = jsonResult.result.grade;
+          let time = jsonResult.result.time * 1000;
+          let integral = jsonResult.result.integral;
+          let sign = document.querySelector("#signIn");
+          sign.innerHTML = '<i class="location arrow icon"></i>今日已签到';
+          $('#signIn').removeAttr("onclick"); //移除click
+          clearTimeout(timer);
+          var timer = setTimeout(function(){
+            $('#signIn').attributes("onclick",signIn())
+          },time);
+        }else {
+          console.log("请求失败！")
+        }
+      })
+    }
+  </script>
+
 </th:block>
+
+
+
+
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.zhong.web.admin;
 
+import com.zhong.po.Blog;
 import com.zhong.po.Type;
 import com.zhong.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by cc on 2021/3/19
@@ -29,7 +31,7 @@ public class TypeController {
     private TypeService typeService;
 
     @GetMapping("/types")
-    public String types(@PageableDefault(size = 3,sort = {"id"},direction = Sort.Direction.DESC)
+    public String types(@PageableDefault(size = 6,sort = {"id"},direction = Sort.Direction.DESC)
                                     Pageable pageable, Model model){
         model.addAttribute("page",typeService.listType(pageable));
 
@@ -91,6 +93,12 @@ public class TypeController {
 
     @GetMapping("/types/{id}/delete")
     public String delete(@PathVariable Long id,RedirectAttributes attributes){
+        Type type = typeService.getType(id);
+        List<Blog> boo = type.getBlogs();
+        if (boo.size() > 0){
+            attributes.addFlashAttribute("message","有关联的博客无法删除！");
+            return "redirect:/admin/types";
+        }
         typeService.deleteType(id);
         attributes.addFlashAttribute("message","删除成功");
         return "redirect:/admin/types";

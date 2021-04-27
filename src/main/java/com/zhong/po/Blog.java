@@ -1,6 +1,6 @@
 package com.zhong.po;
 
-import org.springframework.core.annotation.AliasFor;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import java.util.List;
  */
 //@Entity//和数据库对应
 //@Table(name = "t_blog")
-
 @Entity(name = "t_blog")//和数据库对应
 public class Blog {
 
@@ -239,7 +238,6 @@ public class Blog {
         return "Blog{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
                 ", firstPicture='" + firstPicture + '\'' +
                 ", flag='" + flag + '\'' +
                 ", views=" + views +
@@ -253,7 +251,6 @@ public class Blog {
                 ", type=" + type +
                 ", tags=" + tags +
                 ", user=" + user +
-                ", comments=" + comments +
                 ", tagIds='" + tagIds + '\'' +
                 ", description='" + description + '\'' +
                 '}';

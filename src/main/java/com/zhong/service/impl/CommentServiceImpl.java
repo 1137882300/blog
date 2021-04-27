@@ -2,8 +2,11 @@ package com.zhong.service.impl;
 
 import com.google.common.collect.Lists;
 import com.zhong.dao.CommentRepository;
+import com.zhong.dao.UserRepository;
 import com.zhong.po.Comment;
+import com.zhong.po.User;
 import com.zhong.service.CommentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -16,11 +19,15 @@ import java.util.List;
 /**
  * Created by cc on 2021/4/3
  */
+@Slf4j
 @Service
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     //存放迭代找出的所有子代的集合
     private List<Comment> tempReplyList = Lists.newArrayList();
@@ -32,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> listCommentByBlogId(Long blogId) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "create_time");
-        List<Comment> comments = commentRepository.findByBlog_IdAndParentCommentNull(blogId);
+//        Sort sort = Sort.by(Sort.Direction.DESC, "create_time");
+        List<Comment> comments = commentRepository.findByBlog_IdAndParentCommentNull(blogId);//降序
 
         return eachComment(comments);
     }
@@ -97,11 +104,13 @@ public class CommentServiceImpl implements CommentService {
      * @param comment
      * @return
      */
+    @Deprecated
     @Transactional
     @Override
     public Comment saveComment(Comment comment) {
         Long parentCommentId = comment.getParentComment().getId();
         if (parentCommentId != -1){
+            //拿到父级的对象，放入父级的comment里
             comment.setParentComment(commentRepository.getOne(parentCommentId));
         } else {
             comment.setParentComment(null);//防止报错
@@ -110,7 +119,40 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-
+    /**
+     * 保存评论
+     * @param comment
+     * @return
+     */
+    @Transactional
+    @Override
+    public Comment addComment(Comment comment, Long flag) {
+        //进来的一个评论实体
+        log.info("comment ---> {}",comment);
+        Long commentUid = comment.getCommentUid();//评论人的id
+        Long parentCommentUid = comment.getParentCommentUid();//作者的id
+        //从是否有父级开始 组装数据
+        if (flag != -1){
+            //说明是回复的，有父级
+            User user = userRepository.getOne(commentUid);//获取评论人的基本信息
+            comment.setAvatar(user.getAvatar());
+            comment.setNickname(user.getNickname());
+            comment.setParentCommentUid(parentCommentUid);
+            comment.setCreateTime(new Date());
+            System.out.println("-------->"+flag);
+            comment.setParentComment(commentRepository.getOne(flag));
+            comment.getParentComment().setId(flag);
+        } else {
+            //说明是评论的，没有父级
+            User user = userRepository.getOne(commentUid);//获取评论人的基本信息
+            comment.setAvatar(user.getAvatar());
+            comment.setNickname(user.getNickname());
+            comment.setParentCommentUid(parentCommentUid);
+            comment.setCreateTime(new Date());
+            comment.setParentComment(null);
+        }
+        return commentRepository.save(comment);
+    }
 
 
 }

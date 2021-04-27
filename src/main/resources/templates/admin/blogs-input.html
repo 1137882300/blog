@@ -161,6 +161,8 @@
     </div>
   </div>
 
+  <div class="ui button" onclick="f()">asdasdadasdasddddd</div>
+
   <!--底部-->
   <footer th:replace="admin/_fragments :: footer"  class="ui inverted vertical segment m-padded-tb-massive">
     <div class="ui center aligned container">
@@ -292,7 +294,12 @@
       allowAdditions: true
     });
 
+  function f() {
+    let val = $('[name="flag"]').val();
+    console.log(val)
 
+
+  }
 
   </script>
 </body>

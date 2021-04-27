@@ -1,5 +1,7 @@
 package com.zhong.po;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +32,9 @@ public class Comment {
     @ManyToOne
     private Comment parentComment;
 
+    private Long parentCommentUid;//该作者的id
+
+    private Long commentUid;//评论人的id
 
     public Comment() {
     }
@@ -106,15 +111,31 @@ public class Comment {
         this.parentComment = parentComment;
     }
 
+    public Long getCommentUid() {
+        return commentUid;
+    }
+
+    public void setCommentUid(Long commentUid) {
+        this.commentUid = commentUid;
+    }
+
+    public Long getParentCommentUid() {
+        return parentCommentUid;
+    }
+
+    public void setParentCommentUid(Long parentCommentUid) {
+        this.parentCommentUid = parentCommentUid;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", content='" + content + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", createTime=" + createTime +
+                ", parentCommentUid=" + parentCommentUid +
+                ", commentUid=" + commentUid +
                 '}';
     }
 }
