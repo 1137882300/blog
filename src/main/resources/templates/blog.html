@@ -41,19 +41,21 @@
   </nav>
 
   <!--中间内容-->
-  <div id="waypoint" class="m-container-small m-padded-tb-big animate__animated animate__zoomInDown">
-    <div class="ui container">
-
+  <div id="waypoint" class="m-container-large m-padded-tb-big animate__animated animate__zoomInDown">
+    <div class="ui m-container-large">
       <div class="ui stackable grid">
+        <!--左侧-->
+        <div class="one wide column">
+          <div class="ui segment">
 
-        <div class="one with grid">
-          <!--左侧功能条-->
-          <div class="ui vertical menu">
             <a href="#" class="item"><i class="heart icon"></i></a>
+
           </div>
+
         </div>
 
-        <div class="eleven with grid">
+        <!--中间-->
+        <div class="eleven wide column">
 
           <div class="ui top attached segment">
             <!--title-->
@@ -397,7 +399,87 @@
 
         </div>
 
+        <!--右边-->
+        <div class="four wide column">
+          <!--关注作者-->
+          <div class="ui segments">
+            <div class="ui secondary segment">
+              <div class="ui two column grid">
+                <div class="column">
+                  <span>关注作者</span>
+                </div>
+                <div class="right aligned column">
+                  <a href="#" class="ui teal mini circular basic button">
+                      <span class="item">关注</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="ui teal segment">
+              <div class="ui horizontal link list">
+                <div class="item">
+                  <img src="https://picsum.photos/id/1025/100/100" style="width: 50px; height: 50px;" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar mini image">
+                  <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">李文博</a></div>
+                </div>
+                <div class="item">
+                  <img class="middle aligned" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDIzIDE0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iIzZFQ0VGRiIgZD0iTTMgMWgxN2EyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgzYTIgMiAwIDAgMS0yLTJWM2EyIDIgMCAwIDEgMi0yeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0zIDRoMnY3SDN6TTggNmgybDIgNWgtMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQgNmgtMmwtMiA1aDJ6TTMgOWg1djJIM3pNMTUgM2g1djJoLTV6TTE4IDVoMnYyaC0yek0xNSA5VjdoMnYyeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xNSA4VjZoNXYyek0xNSA5aDV2MmgtNXoiLz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
+                </div>
+              </div>
+              <div class="ui link list">
+                <i class="large thumbs up icon"></i>
+                <span>获得的点赞</span>
+                <span>1,168</span>
+              </div>
+              <div class="ui link list">
+                <i class="large eye icon"></i>
+                <span>文章被阅读</span>
+                <span>1,5168</span>
+              </div>
+            </div>
+          </div>
+          <!--广告-->
+          <div class="img">
+            <img src="https://picsum.photos/id/164/800/600" alt="" class="ui rounded image">
+          </div>
+          <!--相关文章-->
+          <div class="ui segments m-margin-top-large">
+            <div class="ui secondary segment">
+              <i class="bookmark icon"></i>相关文章
+            </div>
+            <div class="ui segment" th:each="blog : ${recommend}">
+              <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black m-text-thin" th:text="${blog.title}">用户故事（user story）</a>
+            </div>
 
+            <!--/*-->
+            <div class="ui segment">
+              <a href="#" target="_blank" class="m-black m-text-thin">用户故事（user story）</a>
+            </div>
+            <div class="ui segment">
+              <a href="#" target="_blank" class="m-black m-text-thin">用户故事（user story）</a>
+            </div>
+            <div class="ui segment">
+              <a href="#" target="_blank" class="m-black m-text-thin">用户故事（user story）</a>
+            </div>
+            <div class="ui segment">
+              <a href="#" target="_blank" class="m-black m-text-thin">用户故事（user story）</a>
+            </div>
+            <!--*/-->
+
+          </div>
+          <!--目录-->
+          <div class="ui segments m-margin-top-large">
+            <div class="ui secondary segment">
+              <i class="bookmark icon"></i>目录
+            </div>
+            <div class="ui segment">
+              <div class="ui toc-container transition" style="width: 250px !important;">
+                <ol class="js-toc">
+
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
 

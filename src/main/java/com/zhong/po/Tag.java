@@ -1,12 +1,9 @@
 package com.zhong.po;
 
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +18,12 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags") //一样需要指定那一端是维护，那一端是被维护(Tag指定为被维护端)
     private List<Blog> blogs = new ArrayList<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime;
 
     public Tag() {
     }
@@ -47,6 +50,22 @@ public class Tag {
 
     public void setBlogs(List<Blog> blogs) {
         this.blogs = blogs;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.zhong.po;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -24,7 +22,29 @@ public class Type {
     @OneToMany(mappedBy = "type") //1 对多 （1 Type：Blog 多） one 是被维护的一端，需要加上 mappedBy = "type"
     private List<Blog> blogs = new ArrayList<>();
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime;
+
     public Type() {
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
     }
 
     public Long getId() {

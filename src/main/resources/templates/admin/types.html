@@ -63,6 +63,8 @@
           <tr>
             <th>编号</th>
             <th>名称</th>
+            <th>添加时间</th>
+            <th>更新时间</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -70,6 +72,8 @@
           <tr th:each="type,iterStat : ${page.content}">
             <td th:text="${iterStat.count}">1</td>
             <td th:text="${type.name}">JAVA</td>
+            <td th:text="${#dates.format(type.createTime,'yyyy-MM-dd HH:mm:ss')}">2020</td>
+            <td th:text="${#dates.format(type.updateTime,'yyyy-MM-dd HH:mm:ss')}">2021</td>
             <td>
               <a href="" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
               <a href="" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">删除</a>
