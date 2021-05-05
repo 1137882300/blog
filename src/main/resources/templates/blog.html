@@ -18,8 +18,8 @@
   <!--导航-->
   <nav th:replace="_fragments :: menu(1)" id="nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
     <div class="ui container">
-      <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
-        <h2 class="ui teal header item">Blog</h2>
+      <div class="ui inverted secondary stackable menu header"><!--stackable可堆叠-->
+        <h1 class="ui teal header item">Blog</h1>
         <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
         <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
         <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
@@ -32,6 +32,13 @@
           </div>
         </div>
       </div>
+<!--      <div class="ui breadcrumb">-->
+<!--        <a class="section">主页</a>-->
+<!--        <i class="right angle icon divider"></i>-->
+<!--        <a class="section">商店</a>-->
+<!--        <i class="right angle icon divider"></i>-->
+<!--        <div class="active section">T恤</div>-->
+<!--      </div>-->
     </div>
 
     <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
@@ -41,17 +48,44 @@
   </nav>
 
   <!--中间内容-->
-  <div id="waypoint" class="m-container-large m-padded-tb-big animate__animated animate__zoomInDown">
+  <div id="waypoint" class="m-container-large m-padded-tb-large animate__animated animate__zoomInDown">
     <div class="ui m-container-large">
       <div class="ui stackable grid">
         <!--左侧-->
-        <div class="one wide column">
-          <div class="ui segment">
-
-            <a href="#" class="item"><i class="heart icon"></i></a>
+        <div class="one wide column middle aligned m-fixed">
+          <div class="ui basic segment" style="position: fixed; left: 75px; top: 200px;">
+            <button class="ui circular thumbs up icon button" id="thumbsUp">
+              <i class="thumbs up teal icon"></i>
+            </button>
+            <div class="floating ui teal mini circular label sub header" style="position: fixed; left: 130px; top: 210px;">2</div>
+            <div class="ui hidden divider"></div>
+            <a href="#comment-container">
+              <button class="ui circular comment icon button">
+                <i class="comment teal icon"></i>
+              </button>
+            </a>
+            <div class="ui hidden divider"></div>
+            <button class="ui circular star icon button">
+              <i class="star teal icon"></i>
+            </button>
+            <div class="ui hidden divider"></div>
+            <button class="ui circular exclamation icon button">
+              <i class="exclamation teal icon"></i>
+            </button>
+            <div class="ui hidden divider"></div>
+            <button class="ui circular weibo icon button">
+              <i class="weibo red icon"></i>
+            </button>
+            <div class="ui hidden divider"></div>
+            <button class="ui circular qq icon button" data-content="923828430" data-position="left center">
+              <i class="qq blue icon"></i>
+            </button>
+            <div class="ui hidden divider"></div>
+            <button class="ui circular wechat icon button">
+              <i class="wechat green icon"></i>
+            </button>
 
           </div>
-
         </div>
 
         <!--中间-->
@@ -61,8 +95,11 @@
             <!--title-->
             <div class="ui horizontal link list">
               <div class="item">
-                <img src="https://picsum.photos/id/1025/100/100" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
-                <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">李文博</a></div>
+                <img src="https://picsum.photos/id/1025/100/100" style="width: 60px; height: 60px;" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                <div class="content"><a href="#" class="ui header" th:text="${blog.user.nickname}">李文博</a></div>
+              </div>
+              <div class="item">
+                <img class="middle aligned" style="width: 28px;height: 19px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDIzIDE0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iIzZFQ0VGRiIgZD0iTTMgMWgxN2EyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgzYTIgMiAwIDAgMS0yLTJWM2EyIDIgMCAwIDEgMi0yeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0zIDRoMnY3SDN6TTggNmgybDIgNWgtMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQgNmgtMmwtMiA1aDJ6TTMgOWg1djJIM3pNMTUgM2g1djJoLTV6TTE4IDVoMnYyaC0yek0xNSA5VjdoMnYyeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xNSA4VjZoNXYyek0xNSA5aDV2MmgtNXoiLz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
               </div>
               <div class="item">
                 <div class="text">
@@ -234,7 +271,7 @@
                   <div class="field">
                     <a href="#">
                       <!--该文章的作者头像-->
-                      <img class="ui avatar image" th:src="@{${blog.user.avatar}}" src="https://picsum.photos/id/1/200/200">
+                      <img class="ui avatar image" style="width: 35px; height: 35px;" th:src="@{${blog.user.avatar}}" src="https://picsum.photos/id/1/200/200">
                     </a>
                   </div>
                   <div class="field">
@@ -300,7 +337,7 @@
                   <h3 class="ui dividing header">评论</h3>
                   <div class="comment" th:each="comment : ${comments}">
                     <a class="avatar">
-                      <img src="https://picsum.photos/id/123/100/100" th:src="@{${comment.avatar}}">
+                      <img style="width: 35px; height: 35px;" src="https://picsum.photos/id/123/100/100" th:src="@{${comment.avatar}}">
                     </a>
                     <div class="content">
                       <a class="author">
@@ -318,7 +355,7 @@
                     <div class="comments" th:if="${#arrays.length(comment.replyComments)} > 0">
                       <div class="comment" th:each="reply : ${comment.replyComments}">
                         <a class="avatar">
-                          <img src="https://picsum.photos/id/123/100/100" th:src="@{${reply.avatar}}">
+                          <img style="width: 35px; height: 35px;" src="https://picsum.photos/id/123/100/100" th:src="@{${reply.avatar}}">
                         </a>
                         <div class="content">
                           <a class="author">
@@ -408,10 +445,15 @@
                 <div class="column">
                   <span>关注作者</span>
                 </div>
-                <div class="right aligned column">
-                  <a href="#" class="ui teal mini circular basic button">
-                      <span class="item">关注</span>
-                  </a>
+                <div id="follow" class="right aligned column">
+                  <div th:fragment="follow" >
+                    <div class="ui teal mini circular basic button">
+                      <span id="followDo2Undo" th:text="${state == 0 ? '关注' : '已关注'}" class="item follow button">关注</span>
+                      <!--                      <span id="followdo" th:if="${state == 1}" class="item">关注</span>-->
+                      <!--                      <span id="followundo" th:if="${state == 0}" class="item">已关注</span>-->
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -439,7 +481,7 @@
           </div>
           <!--广告-->
           <div class="img">
-            <img src="https://picsum.photos/id/164/800/600" alt="" class="ui rounded image">
+            <img src="../static/images/ads.png" th:src="@{/images/ads.png}" class="ui rounded image">
           </div>
           <!--相关文章-->
           <div class="ui segments m-margin-top-large">
@@ -501,7 +543,6 @@
 
   <div class="ui toc-container flowing popup transition hidden" style="width: 250px !important;">
     <ol class="js-toc">
-
     </ol>
   </div>
 
@@ -570,6 +611,22 @@
 
 
   <script th:inline="javascript">
+
+    /* thumbsUp 点赞 */
+    $('#thumbsUp').click(function () {
+      $('#thumbsUp').load(/*[[@{}]]*/"")
+    });
+
+    /*显示qq*/
+    $('.qq').popup();
+
+
+    /*当页面加载完成*/
+    $(function () {
+      $('#comment-container').load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/29");
+      $('#follow').load(/*[[@{/user/follow/{fid}/followJudge(fid=${blog.user.id})}]]*/"/user/follow/29/followJudge");
+    });
+
     /*手机端右上角的小按钮点击展开隐藏*/
     $('.menu.toggle').click(function () {
       $('.m-item').toggleClass('m-mobile-hide')
@@ -670,10 +727,63 @@
     });
 
 
-    /*当页面加载完成*/
-    $(function () {
-      $('#comment-container').load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/29");
+    $('#followDo2Undo').click(function () {
+      let state = /*[[${state}]]*/ 20;
+      console.log(state);
+      if (state == 1){
+        //要取消关注
+        $('#followDo2Undo').load(/*[[@{/user/follow/{fid}/undo(fid=${blog.user.id})}]]*/"user/follow/29/undo",
+            function(response, status, xhr){
+              if (status == "success"){
+                $('#followDo2Undo').innerHTML = "关注"
+              }
+        });
+      } else {
+        //要关注
+        $('#followDo2Undo').load(/*[[@{/user/follow/{fid}/do(fid=${blog.user.id})}]]*/"user/follow/29/do",
+            function(response, status, xhr){
+              if (status == "success"){
+                $('#followDo2Undo').innerHTML = "已关注"
+              }
+            });
+      }
     });
+
+
+    /*关注*/
+    $('#followdo').click(function () {
+      $('#followdo').load(/*[[@{/user/follow/{fid}/do(fid=${blog.user.id})}]]*/"user/follow/29/do",
+          function(response, status, xhr){
+            if (status == "success"){
+              let jsonResult = JSON.parse(response);
+              let result = jsonResult.result;
+              if (result == 1){
+                $('#followdo').css('display','none');
+                $('#followundo').css('display','block');
+                console.log(result)
+              }
+            }
+      });
+    });
+    /*取消关注*/
+    $('#followundo').click(function () {
+      $('#followundo').load(/*[[@{/user/follow/{fid}/undo(fid=${blog.user.id})}]]*/"user/follow/29/undo",
+          function(response, status, xhr){
+            if (status == "success"){
+              let jsonResult = JSON.parse(response);
+              let result = jsonResult.result;
+              if (result == 0){
+                $('#followundo').css('display','none');
+                $('#followdo').css('display','block');
+                console.log(result)
+              }
+            }
+          });
+    });
+
+
+
+
 
     /*评论框textarea 自适应高度*/
     function setHeight(element) {

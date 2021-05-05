@@ -23,13 +23,18 @@ public class ThumbsUp {
 
     private Long uid; //用户id
 
-    private Long totalNumber;//点赞数
+    private Long zid;//点赞的人
+
+    private Long bid;//博客id
+
+    private int total;//点赞数
 
     private Integer status;//点赞状态，1—有效赞，0-取消赞
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime;
 
 }

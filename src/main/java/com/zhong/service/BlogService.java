@@ -38,4 +38,8 @@ public interface BlogService {
 
     void deleteBlog(Long id);
 
+    List<Blog> getBlogByUid(Long uid);
+
+    int countViews(Long uid);
+
 }

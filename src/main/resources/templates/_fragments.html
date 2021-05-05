@@ -22,7 +22,7 @@
 
     <div class="ui container">
     <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
-      <h2 class="ui teal header item">Blog</h2>
+      <h2 class="ui teal header item"><a href="#" th:href="@{/}">Blog</a></h2>
       <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i><span th:text="#{nav.index}">首页</span></a>
       <a href="#" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="idea icon"></i>分类</a>
       <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="tags icon"></i>标签</a>
@@ -58,39 +58,42 @@
           <!--下拉框-->
           <div class="ui simple dropdown item">
             <!--头像-->
-            <div >
+            <div>
               <img class="ui avatar image" src="https://picsum.photos/id/200/100/100" th:src="@{${session.user.avatar}}" >
               <span th:text="${session.user.nickname}">nickname</span>
             </div>
             <!--下拉-->
             <i class="dropdown icon"></i>
-            <div class="ui vertical menu">
-
-                <div class="ui segment">
-                    <div class="item">
-                      <span class="text small ">0</span>
-                      <div class="text">文章</div>
+            <div class="menu">
+              <div class="ui center aligned basic segment m-padded-tb-mini m-margin-top">
+                <div class="ui stackable equal width grid ">
+                  <div class="column">
+                    <h3 class="text">63</h3>
+                    <h3 class="text">文章</h3>
+                  </div>
+                  <div class="column">
+                    <h3 class="text">22</h3>
+                    <h3 class="text">关注</h3>
+                  </div>
+                  <div class="column">
+                    <h3 class="text">33</h3>
+                    <h3 class="text">粉丝</h3>
+                  </div>
+                  <div class="equal width row">
+                    <div class="column">
+                      <div id="signIn" class="ui teal circular button" onclick="signIn()"><i class="location arrow icon"></i>签到</div>
                     </div>
-                    <div class="item">
-                      <span class="text small ">1</span>
-                      <div class="text">关注</div>
-                    </div>
-                    <div class="item">
-                      <span class="text small ">2</span>
-                      <div class="text">粉丝</div>
-                    </div>
+                  </div>
                 </div>
-
-              <div id="signIn" class="ui teal circular button" onclick="signIn()"><i class="location arrow icon"></i>签到</div>
-
+              </div>
               <div class="divider"></div>
-              <a href="#" th:href="@{/about}" class="item"><i class="home icon"></i>
+              <a href="#" th:href="@{/user/profile/{id}(id=${session.user.id})}" class="item"><i class="home icon"></i>
                 <span class="text">个人中心</span>
                 <span class="text right floated">普通用户</span>
               </a>
               <a href="#" class="item"><i class="user icon"></i>
                 <span class="text">账号</span>
-                <span class="text right floated">201145</span>
+                <span class="text right floated" th:text="${session.user.id}">201145</span>
               </a>
               <a href="#" class="item"><i class="heart icon"></i>
                 <span class="text">喜欢的文章</span>
@@ -108,7 +111,7 @@
                 <span class="text">积分</span>
                 <span class="text right floated" id="integral_grade" th:fragment="integral_grade" th:text="${integralGrade}">120</span>
               </a>
-              <a href="#" class="item">
+              <a href="#" class="item" th:href="@{/user/settings}">
                 <i class="cog icon"></i>
                 <span class="text">个人设置</span>
                 <span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
@@ -164,6 +167,7 @@
   </div>
 
 </div>
+
 <br>
 <br>
 <br>
@@ -247,6 +251,7 @@
           var timer = setTimeout(function(){
             $('#signIn').attributes("onclick",signIn())
           },time);
+          console.log("签到成功！")
         }else {
           console.log("请求失败！")
         }

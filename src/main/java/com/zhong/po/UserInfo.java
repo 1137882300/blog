@@ -21,7 +21,7 @@ public class UserInfo implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)//mysql自动生成
     private Long id;
 
-    private String uid;
+    private String uid;//用户id
 
     private String nickname;
 
@@ -35,12 +35,14 @@ public class UserInfo implements Serializable {
 
     private String phone;
 
-    private String work;
+    private String work;//职位
 
     private String address;
 
-    private String hobby;
+    private String hobby;// 个人介绍
 
-    private String intro;
+    private String intro;//个人主页
+
+    private String company;//公司
 
 }

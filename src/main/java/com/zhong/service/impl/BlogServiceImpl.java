@@ -1,5 +1,6 @@
 package com.zhong.service.impl;
 
+import com.google.common.collect.Lists;
 import com.zhong.dao.BlogRepository;
 import com.zhong.exception.NotFoundException;
 import com.zhong.po.Blog;
@@ -8,6 +9,7 @@ import com.zhong.service.BlogService;
 import com.zhong.util.MarkdownUtils;
 import com.zhong.util.MyBeanUtils;
 import com.zhong.vo.BlogQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ import java.util.*;
  * Created by cc on 2021/3/21
  */
 @Service
+@Slf4j
 public class BlogServiceImpl implements BlogService {
 
     @Autowired
@@ -153,6 +156,25 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Blog> getBlogByUid(Long uid) {
+        List<Blog> blogs = blogRepository.getBlogByUid(uid);
+        if (blogs!=null){
+            return blogs;
+        }
+        return Lists.newArrayList();
+    }
+
+    @Override
+    public int countViews(Long uid) {
+        int views = blogRepository.countViews(uid);
+        log.info("views -> {}",views);
+        if (views >= 0){
+            return views;
+        }
+        return 0;
     }
 
 }

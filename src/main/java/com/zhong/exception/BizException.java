@@ -5,6 +5,7 @@ package com.zhong.exception;
  */
 public class BizException implements BaseErrorEnum {
 
+
     @Override
     public String getCode() {
         return null;

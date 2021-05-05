@@ -1,6 +1,7 @@
 package com.zhong.service;
 
 import com.zhong.po.User;
+import com.zhong.vo.UserInfoDataVO;
 
 import javax.jws.soap.SOAPBinding;
 
@@ -19,4 +20,10 @@ public interface UserService {
     User saveUser(User user);
 
     User findUserById(Long id);
+
+    void updateByUid(Long id,String filename);
+
+    User saveOrUpdateUser(User user);
+
+    UserInfoDataVO getProfileData(Long uid);
 }

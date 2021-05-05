@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+  <form action="/fileUpload" method="post" enctype="multipart/form-data">
+    <label>上传图片</label>
+    <input type="file" name="file"/>
+    <input type="submit" value="上传"/>
+  </form>
+  <p>图片:</p>
+  <img th:src="${filename}" style="width: 100px; height: 100px"/>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <form id="formUpload" action="/fileUpload" method="post" enctype="multipart/form-data"><!--onsubmit="return getValue()"-->
+     <label>上传图片</label>
+     <input type="file" name="filePath" id="file" onchange="fileInput(this)" style="opacity: 0"/>
+     <div class="ui button" onclick="showFileInput()">上传</div>
+  </form>
+
+
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  上传文件：<input type="file" id="uploadFile" accept = "image/*" name="singleFile" >
+  <button id="sumbmit" onclick="submit()">上传</button>
+  <script>
+    var file = document.getElementById('uploadFile');
+    console.log(file)
+    file.onchange = function(){
+      console.log(file.files[0])
+    };
+
+    function submit(){
+      var form = new FormData();
+      form.append('file',file.files[0]);
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST','http://localhost:8080/fileUpload',true);
+      xhr.onload = function(){
+        console.log(xhr.responseText)
+      };
+      xhr.send(form)
+    }
+  </script>
+
+
+
+
+  <!--js-->
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script type="text/javascript">
+
+    function fileInput(obj) {
+      var form = new FormData();
+      form.append('file',obj.files[0]);
+      $('#formUpload').submit(form);
+    };
+
+
+
+    function showFileInput() {
+      $('#file').val('');
+      $('#file').click();
+      $('#formUpload').submit();
+    }
+
+    function getValue(){
+      var x = document.getElementById("file").value;
+      if(x == ""){
+        console.log('未选图片');
+        return false;
+      }
+      return true;
+    }
+    //
+    // function show(){
+    //   $('#file2').load({
+    //     type: "POST",
+    //     url: "/fileUpload",
+    //     data:  $('#file2').val(),
+    //     cache: false,
+    //     processData: false,
+    //     contentType: false
+    //   })
+    // }
+
+
+
+  </script>
+
+</body>
+</html>

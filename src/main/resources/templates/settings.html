@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <title>个人资料</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+  <!--导航-->
+  <nav th:replace="_fragments :: menu(50)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+      <div class="ui inverted secondary stackable menu"><!--stackable可堆叠-->
+        <h2 class="ui teal header item">Blog</h2>
+        <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+        <div class="right m-item item m-mobile-hide">
+          <div class="ui icon inverted transparent input">
+            <input type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
+
+  </nav>
+
+  <!--中间内容-->
+  <div class="m-container-large m-padded-tb-big">
+    <div class="ui m-container-large">
+      <div class="ui stackable grid">
+        <!--左边-->
+        <div class="eleven wide column m-padded-tb-large">
+          <div class="ui segment m-padded-lr-responsive">
+            <h4 class="ui dividing header large m-margin-top-large m-padded-tb-small">个人资料</h4>
+            <!-- 头像 -->
+            <div class="ui grid">
+              <div class="four wide column middle aligned">
+                <div class="">
+                  <span>头像</span>
+                </div>
+              </div>
+              <div class="three wide column">
+                <div class="column" th:fragment="avatar">
+                  <img class="ui rounded image" th:src="@{${session.user.avatar}}" src="https://picsum.photos/id/164/72/72" style="width: 72px; height: 72px;" alt="">
+                </div>
+              </div>
+              <div class="five wide column">
+                <div class="field">
+                  <div class="ui subtitle">支持 jpg、png、jpeg格式</div>
+                  <form action="/user/avatar/upload" th:action="@{/user/avatar/upload}" method="post" enctype="multipart/form-data" onsubmit="return getValue()">
+                    <input type="file" name="file" id="file">
+                    <button class="ui teal mini submit button m-margin-top-large">点击上传</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!--线-->
+            <div class="ui inverted section divider"></div>
+            <div class="ui middle aligned divided list" th:object="${userDataVO}">
+              <!-- 昵称 -->
+              <div class="item">
+                <div class="ui grid m-padded-tb-large">
+                  <div class="three wide column">
+                    <div class="center aligned">
+                      <span>昵称</span>
+                    </div>
+                  </div>
+                  <div class="ten wide column">
+                    <div class="ui transparent input">
+                      <input type="text" id="nickname" name="nickname" th:fragment="nickname" placeholder="zane" th:value="*{nickname} != null ? *{nickname} : ''">
+                    </div>
+                  </div>
+                  <div class="three wide column">
+                    <a href="#">
+                      <div id="settings-nickname">
+                        <i class="pencil alternate icon"></i>
+                        <span >修改</span>
+                      </div>
+
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- 职位 -->
+              <div class="item">
+                <div class="ui grid m-padded-tb-large">
+                  <div class="three wide column">
+                    <div class="center aligned">
+                      <span>职位</span>
+                    </div>
+                  </div>
+
+                  <div class="ten wide column">
+                    <div class="ui transparent input">
+                      <input type="text" placeholder="java开发" th:value="*{work} != null ? *{work} : ''">
+                    </div>
+                  </div>
+                  <div class="three wide column">
+                    <a href="#">
+                      <i class="pencil alternate icon"></i>
+                      <span>修改</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+                <!-- 公司 -->
+              <div class="item">
+                <div class="ui grid m-padded-tb-large">
+                  <div class="three wide column">
+                    <div class="center aligned">
+                      <span>公司</span>
+                    </div>
+                  </div>
+
+                  <div class="ten wide column">
+                    <div class="ui transparent input">
+                      <input type="text" placeholder="华为" th:value="*{company} != null ? *{company} : ''">
+                    </div>
+                  </div>
+                  <div class="three wide column">
+                    <a href="#">
+                      <i class="pencil alternate icon"></i>
+                      <span>修改</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+                <!-- 个人介绍 -->
+              <div class="item">
+                <div class="ui grid m-padded-tb-large">
+                  <div class="three wide column">
+                    <div class="center aligned">
+                      <span>个人介绍</span>
+                    </div>
+                  </div>
+
+                  <div class="ten wide column">
+                    <div class="ui transparent input">
+                      <input type="text" placeholder="爱生活" th:value="*{hobby} != null ? *{hobby} : ''">
+                    </div>
+                  </div>
+                  <div class="three wide column">
+                    <a href="#">
+                      <i class="pencil alternate icon"></i>
+                      <span>修改</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+                <!-- 个人主页 -->
+              <div class="item">
+                <div class="ui grid m-padded-tb-large">
+              <div class="three wide column">
+                <div class="center aligned">
+                  <span>个人主页</span>
+                </div>
+              </div>
+              <div class="ten wide column">
+                <div class="ui transparent input">
+                  <input type="text" placeholder="填写你的个人主页" th:value="*{intro} != null ? *{intro} : ''">
+                </div>
+              </div>
+              <div class="three wide column">
+                <a href="#">
+                  <i class="pencil alternate icon"></i>
+                  <span>修改</span>
+                </a>
+              </div>
+            </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!--右边-->
+        <div class="five wide column">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!--底部-->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+      <div class="ui inverted divided stackable grid">
+        <div class="three wide column">
+          <div class="ui inverted link list">
+            <div class="item">
+              <img src="../static/images/wechat.jpg" class="ui round image" alt="" style="width: 110px;">
+            </div>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">用户故事（user story）</a>
+            <a href="#" class="item">用户故事（user story）</a>
+            <a href="#" class="item">用户故事（user story）</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我们</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Email：zane@163.com</a>
+            <a href="#" class="item">QQ：6548311</a>
+          </div>
+        </div>
+        <div class="seven wide column">
+          <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+          <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客、会分享关于编程、写作、思考相关的内日哦那个，希望可以给来这儿的人有所帮助。。。</p>
+        </div>
+      </div>
+      <!--线-->
+      <div class="ui inverted section divider"></div>
+      <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright@ 2021-2023 zhong</p>
+    </div>
+
+  </footer>
+
+  <!--js-->
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+
+  <script>
+    $('#settings-nickname').click(function () {
+      $('#settings-nickname').load(/*[[@{/user/update/nickname}]]*/"",{
+        'nickname': $('[name="nickname"]').val()
+      }, function (response, status, xhr) {
+        console.log(response)
+      })
+
+    });
+    //判断是否选择了图片
+    function getValue(){
+      var x = document.getElementById("file").value;
+      if(x == ""){
+        console.log('未选图片');
+        alert("请选择图片！")
+        return false;
+      }
+      return true;
+    }
+  </script>
+
+
+</body>
+</html>

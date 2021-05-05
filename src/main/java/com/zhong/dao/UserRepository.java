@@ -2,6 +2,7 @@ package com.zhong.dao;
 
 import com.zhong.po.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByUsername(@Param("username") String username);
 
 
-
+    //更新img 地址
+    @Modifying
+    @Query(nativeQuery = true,value = "update t_user set avatar = ?2 where id = ?1")
+    void updateByUid(Long id,String filename);
+//    void updateByUid(@Param("id") Long id,@Param("filename") String filename);
 }

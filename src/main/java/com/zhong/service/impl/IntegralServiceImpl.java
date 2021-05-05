@@ -57,9 +57,7 @@ public class IntegralServiceImpl implements IntegralService {
      * Lv6  /   5001 ~ 10000
      * Lv7  /   10000~ 无穷大
      * ------------------------------
-     *
      * @param grade
-     * @return
      */
     @Override
     public String convertGrade(Long grade) {

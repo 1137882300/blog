@@ -45,4 +45,9 @@ public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificati
     @Query(nativeQuery = true,value = "select * from t_blog b where date_format(b.update_time, '%Y') = :year")
     List<Blog> findByYear(@Param("year") String year);
 
+    @Query(nativeQuery = true, value = "select * from t_blog where user_id = ?1")
+    List<Blog> getBlogByUid(Long uid);
+
+    @Query(nativeQuery = true, value = "select ifnull((select sum(views) as views from t_blog where user_id = ?1),0)")
+    Integer countViews(Long uid);
 }

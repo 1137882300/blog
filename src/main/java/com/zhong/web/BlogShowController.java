@@ -1,8 +1,10 @@
 package com.zhong.web;
 
 import com.zhong.po.Blog;
+import com.zhong.po.Follow;
 import com.zhong.po.User;
 import com.zhong.service.BlogService;
+import com.zhong.service.FollowService;
 import com.zhong.service.TagService;
 import com.zhong.service.TypeService;
 import com.zhong.vo.BlogQuery;
@@ -15,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +37,8 @@ public class BlogShowController {
     private TypeService typeService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private FollowService followService;
 
     @GetMapping("/user/blog/toBlogInput")
     public String toBlogInput(Model model){
@@ -69,10 +74,6 @@ public class BlogShowController {
         //跳转 发布成功的页面(更新，发布都是这个页面)
         return "published";
     }
-
-
-
-
 
 
 

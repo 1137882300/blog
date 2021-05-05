@@ -35,7 +35,9 @@ public class IntegralController {
     @GetMapping("/integral/integral_grade")
     public String integralGrade(HttpSession session, Model model){
         Integral integral = getIntegral(session);
-        model.addAttribute("integralGrade",integral.getIntegral());
+        if (integral != null){
+            model.addAttribute("integralGrade",integral.getIntegral());
+        }
         return "_fragments :: integral_grade";
     }
 
@@ -49,10 +51,12 @@ public class IntegralController {
     @GetMapping("/integral/grade_integral")
     public String gradeIntegral(HttpSession session, Model model){
         Integral integral = getIntegral(session);
-        Long grade = integral.getGrade();
-        //转换等级 为 Lv xxxxx
-        String convertGrade = integralService.convertGrade(grade);
-        model.addAttribute("gradeIntegral",convertGrade);
+        if (integral != null){
+            Long grade = integral.getGrade();
+            //转换等级 为 Lv xxxxx
+            String convertGrade = integralService.convertGrade(grade);
+            model.addAttribute("gradeIntegral",convertGrade);
+        }
         return "_fragments :: grade_integral";
     }
 
@@ -65,7 +69,10 @@ public class IntegralController {
         User user = (User) session.getAttribute("user");
         Integral integral = integralService.findIntegral(user.getId());
         log.info("integral -> {}", integral);
-        return integral;
+        if (integral != null){
+            return integral;
+        }
+        return null;
     }
 
 
@@ -73,10 +80,13 @@ public class IntegralController {
     @GetMapping("/integral/signIn")
     public JsonResult<SignInDataVO> signIn(HttpSession session){
         Integral integral = getIntegral(session);
-        Long uid = integral.getUid();
-        SignInDataVO signInDataVO = integralService.updateGradeAndIntegralByUid(uid);
-        log.info("signInDataVO->{}",signInDataVO);
-        return JsonResult.success(signInDataVO);
+        if (integral != null){
+            Long uid = integral.getUid();
+            SignInDataVO signInDataVO = integralService.updateGradeAndIntegralByUid(uid);
+            log.info("signInDataVO->{}",signInDataVO);
+            return JsonResult.success(signInDataVO);
+        }
+        return JsonResult.success();
     }
 
 

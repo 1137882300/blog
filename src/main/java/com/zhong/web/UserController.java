@@ -1,26 +1,44 @@
 package com.zhong.web;
 
+import com.fasterxml.jackson.databind.deser.BuilderBasedDeserializer;
+import com.zhong.exception.BizException;
+import com.zhong.po.Blog;
 import com.zhong.po.Integral;
 import com.zhong.po.User;
-import com.zhong.service.IntegralService;
-import com.zhong.service.UserService;
+import com.zhong.po.UserInfo;
+import com.zhong.service.*;
 import com.zhong.request.RegisterForm;
+import com.zhong.vo.UserDataVO;
+import com.zhong.vo.UserInfoDataVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by cc on 2021/4/5
  */
 @Controller
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -28,6 +46,16 @@ public class UserController {
 
     @Autowired
     private IntegralService integralService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private BlogService blogService;
+
+    @Autowired
+    private FollowService followService;
+
 
     /**
      * 跳转用户登录
@@ -117,6 +145,101 @@ public class UserController {
         return "redirect:/index";
     }
 
+
+    @GetMapping("/user/profile")
+    public String profile(@PageableDefault(size = 50,sort = {"updateTime"},direction = Sort.Direction.DESC)
+                                      Pageable pageable, Model model){
+        model.addAttribute("page",blogService.listBlog(pageable));
+        return "profile";
+    }
+
+    /**
+     * 根据 uid
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/user/profile/{id}")
+    public String profile(@PathVariable("id") Long id, Model model){
+        User user = userService.findUserById(id);
+        model.addAttribute("user",user); //用户信息
+
+        UserInfoDataVO userInfoDataVO =  userService.getProfileData(id);
+        model.addAttribute("userInfoDataVO", userInfoDataVO);
+
+        //博客信息
+        List<Blog> blogList = blogService.getBlogByUid(id);
+        model.addAttribute("blogList",blogList);
+
+        return "profile";
+    }
+
+
+
+    @GetMapping("/user/settings")
+    public String settings(HttpSession session,Model model){
+        User user = (User) session.getAttribute("user");
+        UserInfo userInfo = userInfoService.findByUid(user.getId());
+        if (userInfo != null){
+            UserDataVO userDataVO = UserDataVO.builder()
+                    .nickname(user.getNickname())
+                    .work(userInfo.getWork() != null ? userInfo.getWork() : "")
+                    .company(userInfo.getCompany() != null ? userInfo.getCompany() : "")
+                    .hobby(userInfo.getHobby() != null ? userInfo.getHobby() : "")
+                    .intro(userInfo.getIntro() != null ? userInfo.getIntro() : "")
+                    .build();
+            model.addAttribute("userDataVO", userDataVO);
+        } else {
+            UserDataVO userDataVO = UserDataVO.builder()
+                    .nickname(user.getNickname())
+                    .work("")
+                    .company("")
+                    .hobby("")
+                    .intro("")
+                    .build();
+            model.addAttribute("userDataVO", userDataVO);
+        }
+        return "settings";
+    }
+
+
+    @PostMapping("/user/avatar/upload")
+    public String upload(@RequestParam(value = "file") MultipartFile file, HttpSession session){
+        if (file.isEmpty()) {
+            System.out.println("文件为空 ");
+        }
+        String originalFilename = file.getOriginalFilename();
+        String suffixFilename = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String prefixFilename = originalFilename.substring(0,originalFilename.indexOf("."));
+        //上传后的路径
+        String filePath = "D:\\ideaProject\\blog\\src\\main\\resources\\static\\uploads\\";
+        String newFilename = prefixFilename + "_" + UUID.randomUUID() + suffixFilename;
+        File dest = new File(filePath + newFilename);
+        if (!dest.getParentFile().exists()){
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String filename = "/static/uploads/" + newFilename;
+        System.out.println(" -> "+filename);
+
+        User user = (User) session.getAttribute("user");
+        userService.updateByUid(user.getId(),filename);
+        return "settings :: avatar";
+    }
+
+
+    @GetMapping("/user/update/nickname")
+    public String nickname(HttpSession session,@Param("nickname") String nickname){
+        User user = (User) session.getAttribute("user");
+        user.setNickname(nickname);
+        User u = userService.saveOrUpdateUser(user);
+        log.info("user -> {}",u);
+        return "settings :: nickname";
+    }
 
 
 }
