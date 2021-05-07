@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDataVO {
 
+    private String avatar;
+
     private String nickname;
 
     private String work;//职位

@@ -55,6 +55,7 @@ public class IntegralController {
             Long grade = integral.getGrade();
             //转换等级 为 Lv xxxxx
             String convertGrade = integralService.convertGrade(grade);
+            integralService.setGradeIcon(integral);
             model.addAttribute("gradeIntegral",convertGrade);
         }
         return "_fragments :: grade_integral";

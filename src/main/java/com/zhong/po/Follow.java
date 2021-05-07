@@ -25,9 +25,9 @@ public class Follow {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;//用户表
+    private Long uid;//关注的人
 
-    private Long fid;//关注用户的id
+    private Long fid;//被关注的人
 
     private int state;//点赞状态, 1:已点赞，2:未点赞
 

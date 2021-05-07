@@ -2,10 +2,7 @@ package com.zhong.web;
 
 import com.fasterxml.jackson.databind.deser.BuilderBasedDeserializer;
 import com.zhong.exception.BizException;
-import com.zhong.po.Blog;
-import com.zhong.po.Integral;
-import com.zhong.po.User;
-import com.zhong.po.UserInfo;
+import com.zhong.po.*;
 import com.zhong.service.*;
 import com.zhong.request.RegisterForm;
 import com.zhong.vo.UserDataVO;
@@ -56,6 +53,7 @@ public class UserController {
     @Autowired
     private FollowService followService;
 
+    private final String REDIRECT = "redirect:/user/settings";
 
     /**
      * 跳转用户登录
@@ -81,7 +79,7 @@ public class UserController {
                         RedirectAttributes attributes){
         User user = userService.checkUser(username,password);
         if (user != null){
-            user.setPassword(null);
+            user.setPassword(password);
             session.setAttribute("user",user);
             return "redirect:/";//跳转到首页
         }else {
@@ -127,9 +125,15 @@ public class UserController {
                 .uid(saveUser.getId())
                 .grade(20L)
                 .integral(20L)
+                .img("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDIzIDE0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iIzhDREJGNCIgZD0iTTMgMWgxN2EyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgzYTIgMiAwIDAgMS0yLTJWM2EyIDIgMCAwIDEgMi0yeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0zIDRoMnY3SDN6TTggNmgybDIgNWgtMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQgNmgtMmwtMiA1aDJ6TTMgOWg1djJIM3pNMTYgNGwxLTF2MmgtMXpNMTcgM2gydjJoLTJ6TTE3IDVoMnY2aC0yeiIvPgogICAgPC9nPgo8L3N2Zz4K")
                 .createTime(new Date())
                 .build();
         integralService.saveIntegral(integral);
+        //构建用户信息对象
+        UserInfo userInfo = UserInfo.builder()
+                .uid(saveUser.getId())
+                .build();
+        userInfoService.saveUserInfo(userInfo);
         // 注册成功，重定向到登录页面
         return "redirect:/user/toLogin";
     }
@@ -160,10 +164,10 @@ public class UserController {
      * @return
      */
     @GetMapping("/user/profile/{id}")
-    public String profile(@PathVariable("id") Long id, Model model){
+    public String profile(@PathVariable("id") Long id,HttpSession session , Model model){
         User user = userService.findUserById(id);
-        model.addAttribute("user",user); //用户信息
-
+        model.addAttribute("user",user);
+        //用户信息
         UserInfoDataVO userInfoDataVO =  userService.getProfileData(id);
         model.addAttribute("userInfoDataVO", userInfoDataVO);
 
@@ -171,6 +175,14 @@ public class UserController {
         List<Blog> blogList = blogService.getBlogByUid(id);
         model.addAttribute("blogList",blogList);
 
+        //关注
+        User u = (User) session.getAttribute("user");
+        Follow follow = followService.queryByUidAndFid(u.getId(), id);
+        if (follow == null){
+            model.addAttribute("state",0);
+        } else {
+            model.addAttribute("state", follow.getState());
+        }
         return "profile";
     }
 
@@ -182,27 +194,36 @@ public class UserController {
         UserInfo userInfo = userInfoService.findByUid(user.getId());
         if (userInfo != null){
             UserDataVO userDataVO = UserDataVO.builder()
+                    .avatar(userInfo.getAvatar())
                     .nickname(user.getNickname())
                     .work(userInfo.getWork() != null ? userInfo.getWork() : "")
                     .company(userInfo.getCompany() != null ? userInfo.getCompany() : "")
                     .hobby(userInfo.getHobby() != null ? userInfo.getHobby() : "")
                     .intro(userInfo.getIntro() != null ? userInfo.getIntro() : "")
                     .build();
+            log.warn("userDataVO -> {}",userDataVO);
             model.addAttribute("userDataVO", userDataVO);
         } else {
             UserDataVO userDataVO = UserDataVO.builder()
+                    .avatar(user.getAvatar())
                     .nickname(user.getNickname())
                     .work("")
                     .company("")
                     .hobby("")
                     .intro("")
                     .build();
+            log.warn("userDataVO -> {}",userDataVO);
             model.addAttribute("userDataVO", userDataVO);
         }
         return "settings";
     }
 
-
+    /**
+     * 上传图片
+     * @param file
+     * @param session
+     * @return
+     */
     @PostMapping("/user/avatar/upload")
     public String upload(@RequestParam(value = "file") MultipartFile file, HttpSession session){
         if (file.isEmpty()) {
@@ -225,20 +246,67 @@ public class UserController {
         }
         String filename = "/static/uploads/" + newFilename;
         System.out.println(" -> "+filename);
-
         User user = (User) session.getAttribute("user");
         userService.updateByUid(user.getId(),filename);
-        return "settings :: avatar";
+        userInfoService.updateByUid(user.getId(),filename);
+        return "redirect:/user/settings";
     }
 
-
-    @GetMapping("/user/update/nickname")
+    /**
+     * 修改 nickname
+     * @param session
+     * @param nickname
+     * @return
+     */
+    @PostMapping("/user/update/nickname")
     public String nickname(HttpSession session,@Param("nickname") String nickname){
+        log.warn("nickname ->{}",nickname);
         User user = (User) session.getAttribute("user");
         user.setNickname(nickname);
         User u = userService.saveOrUpdateUser(user);
+        userInfoService.saveOrUpdate(user.getId(),nickname);
         log.info("user -> {}",u);
-        return "settings :: nickname";
+        return REDIRECT;
+    }
+
+
+
+    /**
+     * 修改 work
+     * @param session
+     * @param work
+     * @return
+     */
+    @PostMapping("/user/update/work")
+    public String work(HttpSession session,@Param("work") String work){
+        log.info("work -> {}",work);
+        User user = (User) session.getAttribute("user");
+        userInfoService.saveOrUpdateWork(user.getId(),work);
+        return REDIRECT;
+    }
+
+    @PostMapping("/user/update/company")
+    public String company(HttpSession session,@Param("company") String company){
+        log.info("company -> {}",company);
+        User user = (User) session.getAttribute("user");
+        userInfoService.saveOrUpdateCompany(user.getId(),company);
+        return REDIRECT;
+    }
+
+    @PostMapping("/user/update/intro")
+    public String intro(HttpSession session,@Param("intro") String intro){
+        log.info("intro -> {}",intro);
+        User user = (User) session.getAttribute("user");
+        userInfoService.saveOrUpdateIntro(user.getId(),intro);
+        return REDIRECT;
+    }
+
+    @PostMapping("/user/update/hobby")
+    public String hobby(HttpSession session,@Param("hobby") String hobby){
+        log.info("hobby -> {}",hobby);
+        User user = (User) session.getAttribute("user");
+        userInfoService.saveOrUpdateHobby(user.getId(),hobby);
+        return REDIRECT;
     }
 
 

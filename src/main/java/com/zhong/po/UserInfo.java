@@ -2,6 +2,7 @@ package com.zhong.po;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "t_user_info")
@@ -21,7 +23,7 @@ public class UserInfo implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)//mysql自动生成
     private Long id;
 
-    private String uid;//用户id
+    private Long uid;//用户id
 
     private String nickname;
 
@@ -44,5 +46,7 @@ public class UserInfo implements Serializable {
     private String intro;//个人主页
 
     private String company;//公司
+
+    private String avatar;//头像
 
 }

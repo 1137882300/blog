@@ -38,7 +38,7 @@
     <div class="ui m-container-large">
       <div class="ui stackable grid">
         <!--左边-->
-        <div class="eleven wide column m-padded-tb-large">
+        <div class="eleven wide column m-padded-tb-large" th:object="${userDataVO}">
           <div class="ui segment m-padded-lr-responsive">
             <h4 class="ui dividing header large m-margin-top-large m-padded-tb-small">个人资料</h4>
             <!-- 头像 -->
@@ -49,9 +49,12 @@
                 </div>
               </div>
               <div class="three wide column">
-                <div class="column" th:fragment="avatar">
-                  <img class="ui rounded image" th:src="@{${session.user.avatar}}" src="https://picsum.photos/id/164/72/72" style="width: 72px; height: 72px;" alt="">
+                <div th:fragment="avatar">
+                  <div class="column">
+                    <img class="ui rounded image" th:src="@{*{avatar} == null ? ${session.user.avatar} : *{avatar}}" src="https://picsum.photos/id/164/72/72" style="width: 72px; height: 72px;" alt="">
+                  </div>
                 </div>
+
               </div>
               <div class="five wide column">
                 <div class="field">
@@ -65,7 +68,7 @@
             </div>
             <!--线-->
             <div class="ui inverted section divider"></div>
-            <div class="ui middle aligned divided list" th:object="${userDataVO}">
+            <div class="ui middle aligned divided list" >
               <!-- 昵称 -->
               <div class="item">
                 <div class="ui grid m-padded-tb-large">
@@ -76,7 +79,7 @@
                   </div>
                   <div class="ten wide column">
                     <div class="ui transparent input">
-                      <input type="text" id="nickname" name="nickname" th:fragment="nickname" placeholder="zane" th:value="*{nickname} != null ? *{nickname} : ''">
+                      <input type="text" id="nickname" name="nickname" placeholder="zane" th:value="*{nickname} != null ? *{nickname} : ''">
                     </div>
                   </div>
                   <div class="three wide column">
@@ -85,7 +88,6 @@
                         <i class="pencil alternate icon"></i>
                         <span >修改</span>
                       </div>
-
                     </a>
                   </div>
                 </div>
@@ -98,16 +100,17 @@
                       <span>职位</span>
                     </div>
                   </div>
-
                   <div class="ten wide column">
                     <div class="ui transparent input">
-                      <input type="text" placeholder="java开发" th:value="*{work} != null ? *{work} : ''">
+                      <input id="work" type="text" placeholder="java开发" th:value="*{work} != null ? *{work} : ''">
                     </div>
                   </div>
                   <div class="three wide column">
                     <a href="#">
-                      <i class="pencil alternate icon"></i>
-                      <span>修改</span>
+                      <div id="settings-work">
+                        <i class="pencil alternate icon"></i>
+                        <span>修改</span>
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -123,13 +126,15 @@
 
                   <div class="ten wide column">
                     <div class="ui transparent input">
-                      <input type="text" placeholder="华为" th:value="*{company} != null ? *{company} : ''">
+                      <input id="company" type="text" placeholder="华为" th:value="*{company} != null ? *{company} : ''">
                     </div>
                   </div>
                   <div class="three wide column">
                     <a href="#">
-                      <i class="pencil alternate icon"></i>
-                      <span>修改</span>
+                      <div id="settings-company">
+                        <i class="pencil alternate icon"></i>
+                        <span>修改</span>
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -145,13 +150,15 @@
 
                   <div class="ten wide column">
                     <div class="ui transparent input">
-                      <input type="text" placeholder="爱生活" th:value="*{hobby} != null ? *{hobby} : ''">
+                      <input id="hobby" type="text" placeholder="爱生活" th:value="*{hobby} != null ? *{hobby} : ''">
                     </div>
                   </div>
                   <div class="three wide column">
                     <a href="#">
-                      <i class="pencil alternate icon"></i>
-                      <span>修改</span>
+                      <div id="settings-hobby">
+                        <i class="pencil alternate icon"></i>
+                        <span>修改</span>
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -166,13 +173,15 @@
               </div>
               <div class="ten wide column">
                 <div class="ui transparent input">
-                  <input type="text" placeholder="填写你的个人主页" th:value="*{intro} != null ? *{intro} : ''">
+                  <input id="intro" type="text" placeholder="填写你的个人主页" th:value="*{intro} != null ? *{intro} : ''">
                 </div>
               </div>
               <div class="three wide column">
                 <a href="#">
-                  <i class="pencil alternate icon"></i>
-                  <span>修改</span>
+                  <div id="settings-intro">
+                    <i class="pencil alternate icon"></i>
+                    <span>修改</span>
+                  </div>
                 </a>
               </div>
             </div>
@@ -242,15 +251,61 @@
   <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
   <!--/*/</th:block>/*/-->
 
-  <script>
+  <script th:inline="javascript">
+    //修改nickname
     $('#settings-nickname').click(function () {
-      $('#settings-nickname').load(/*[[@{/user/update/nickname}]]*/"",{
+      console.log($('#nickname').val())
+      $('#nickname').load(/*[[@{/user/update/nickname}]]*/"",{
         'nickname': $('[name="nickname"]').val()
       }, function (response, status, xhr) {
         console.log(response)
       })
-
     });
+
+    //修改 职位
+    $('#settings-work').click(function () {
+      console.log($('#work').val())
+      $('#work').load(/*[[@{/user/update/work}]]*/"",{
+        'work': $('#work').val()
+      }, function (response, status, xhr) {
+        console.log(response)
+      })
+    });
+
+    //修改 公司
+    $('#settings-company').click(function () {
+      console.log($('#company').val())
+      $('#company').load(/*[[@{/user/update/company}]]*/"",{
+        'company': $('#company').val()
+      }, function (response, status, xhr) {
+        console.log(response)
+      })
+    });
+
+    //修改 个人介绍
+    $('#settings-hobby').click(function () {
+      console.log($('#hobby').val())
+      $('#hobby').load(/*[[@{/user/update/hobby}]]*/"",{
+        'hobby': $('#hobby').val()
+      }, function (response, status, xhr) {
+        console.log(response)
+      })
+    });
+
+    //修改 个人主页
+    $('#settings-intro').click(function () {
+      console.log($('#intro').val())
+      $('#intro').load(/*[[@{/user/update/intro}]]*/"",{
+        'intro': $('#intro').val()
+      }, function (response, status, xhr) {
+        console.log(response)
+      })
+    });
+
+
+
+
+
     //判断是否选择了图片
     function getValue(){
       var x = document.getElementById("file").value;

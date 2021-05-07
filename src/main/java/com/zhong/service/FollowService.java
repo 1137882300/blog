@@ -20,4 +20,7 @@ public interface FollowService {
     int countFollowByUid(Long uid);
 
     int countFollowerByUid(Long uid);
+
+    Follow saveFollow(Long uid, Long fid);
+
 }

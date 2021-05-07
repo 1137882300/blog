@@ -18,10 +18,13 @@ public class UserInfoDataVO {
 
     private int follower; //关注者
 
+    private int thumbs;//点赞数
 
     private int views;//文章被阅读
 
     private Long integral;//积分值
+
+    private String img;//等级图标
 
 
 

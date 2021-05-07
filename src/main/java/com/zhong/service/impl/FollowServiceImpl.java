@@ -106,8 +106,22 @@ public class FollowServiceImpl implements FollowService {
         return followRepository.countFollowerByUid(uid);
     }
 
-
-
+    /**
+     * 保存 关注信息
+     * @param uid
+     * @param fid
+     * @return
+     */
+    @Override
+    public Follow saveFollow(Long uid, Long fid) {
+        Follow follow = Follow.builder()
+                .fid(fid)
+                .uid(uid)
+                .state(1)
+                .createTime(new Date())
+                .build();
+        return followRepository.save(follow);
+    }
 
 
 }

@@ -54,10 +54,12 @@
         <!--左侧-->
         <div class="one wide column middle aligned m-fixed">
           <div class="ui basic segment" style="position: fixed; left: 75px; top: 200px;">
-            <button class="ui circular thumbs up icon button" id="thumbsUp">
+            <button class="ui circular thumbs up icon button" id="thumbs-up">
               <i class="thumbs up teal icon"></i>
             </button>
-            <div class="floating ui teal mini circular label sub header" style="position: fixed; left: 130px; top: 210px;">2</div>
+            <div id="thumbs">
+              <span th:fragment="thumbs" th:text="${num}" class="floating ui teal mini circular label sub header" style="position: fixed; left: 130px; top: 210px; width: 19.5px;height: 18px;">29</span>
+            </div>
             <div class="ui hidden divider"></div>
             <a href="#comment-container">
               <button class="ui circular comment icon button">
@@ -94,7 +96,7 @@
           <div class="ui top attached segment">
             <!--title-->
             <div class="ui horizontal link list">
-              <div class="item">
+              <div class="item clicklink" id="clicklink">
                 <img src="https://picsum.photos/id/1025/100/100" style="width: 60px; height: 60px;" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
                 <div class="content"><a href="#" class="ui header" th:text="${blog.user.nickname}">李文博</a></div>
               </div>
@@ -270,8 +272,8 @@
                 <div class="fields">
                   <div class="field">
                     <a href="#">
-                      <!--该文章的作者头像-->
-                      <img class="ui avatar image" style="width: 35px; height: 35px;" th:src="@{${blog.user.avatar}}" src="https://picsum.photos/id/1/200/200">
+                      <!--登陆者的头像-->
+                      <img class="ui avatar image" style="width: 35px; height: 35px;" th:src="@{${session.user.avatar}}" src="https://picsum.photos/id/1/200/200">
                     </a>
                   </div>
                   <div class="field">
@@ -292,12 +294,6 @@
                 </div>
               </div>
             </div>
-
-
-            <br>
-            <br>
-            <br>
-            <br>
 
 
             <!-- 输入内容 1
@@ -342,10 +338,10 @@
                     <div class="content">
                       <a class="author">
                         <span th:text="${comment.nickname}">Matt</span>
-                        <div class="ui mini basic teal left label m-padded-mini" th:if="${comment.parentCommentUid == comment.blog.user.id}">作者</div>
+                        <div class="ui mini basic teal left label m-padded-mini" th:if="${session.user.id} == ${uid}">作者</div>
                       </a>
                       <div class="metadata">
-                        <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
+                        <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}">今天下午 5:42</span>
                       </div>
                       <div class="text" th:text="${comment.content}">太赞了！ </div>
                       <div class="actions">
@@ -360,11 +356,11 @@
                         <div class="content">
                           <a class="author">
                             <span th:text="${reply.nickname}">小红</span>
-                            <div class="ui mini basic teal left  label m-padded-mini" th:if="${comment.parentCommentUid == comment.blog.user.id}">作者</div>
+                            <div class="ui mini basic teal left  label m-padded-mini" th:if="${session.user.id} == ${uid}">作者</div>
                             &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@小白</span>
                           </a>
                           <div class="metadata">
-                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
+                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm:ss')}">今天下午 5:42</span>
                           </div>
                           <div class="text" th:text="${reply.content}">太赞了！ </div>
                           <div class="actions">
@@ -430,10 +426,7 @@
                 </div>
               </div>
             </div>
-
-
           </div>
-
         </div>
 
         <!--右边-->
@@ -446,23 +439,22 @@
                   <span>关注作者</span>
                 </div>
                 <div id="follow" class="right aligned column">
-                  <div th:fragment="follow" >
-                    <div class="ui teal mini circular basic button">
-                      <span id="followDo2Undo" th:text="${state == 0 ? '关注' : '已关注'}" class="item follow button">关注</span>
+                  <div th:fragment="follow"> <!--这样的 themleaf 局部刷新是ok的-->
+                    <div id="follow-btn" class="ui teal mini circular basic button" >
+                      <span th:text="${state == 0 ? '关注' : '已关注'}" class="item follow button">关注</span><!--id="followDo2Undo"-->
                       <!--                      <span id="followdo" th:if="${state == 1}" class="item">关注</span>-->
                       <!--                      <span id="followundo" th:if="${state == 0}" class="item">已关注</span>-->
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
             <div class="ui teal segment">
               <div class="ui horizontal link list">
                 <div class="item">
-                  <img src="https://picsum.photos/id/1025/100/100" style="width: 50px; height: 50px;" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar mini image">
-                  <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">李文博</a></div>
-                </div>
+                  <img src="https://picsum.photos/id/1025/100/100" style="width: 50px; height: 50px;" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar mini image clicklink">
+                  <div class="content"><a href="#" class="header clicklink" th:text="${blog.user.nickname}">李文博</a></div>
+                 </div>
                 <div class="item">
                   <img class="middle aligned" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDIzIDE0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iIzZFQ0VGRiIgZD0iTTMgMWgxN2EyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgzYTIgMiAwIDAgMS0yLTJWM2EyIDIgMCAwIDEgMi0yeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0zIDRoMnY3SDN6TTggNmgybDIgNWgtMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQgNmgtMmwtMiA1aDJ6TTMgOWg1djJIM3pNMTUgM2g1djJoLTV6TTE4IDVoMnYyaC0yek0xNSA5VjdoMnYyeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xNSA4VjZoNXYyek0xNSA5aDV2MmgtNXoiLz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
                 </div>
@@ -559,7 +551,6 @@
   <br>
   <br>
 
-
   <!--底部-->
   <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
     <div class="ui center aligned container">
@@ -612,9 +603,16 @@
 
   <script th:inline="javascript">
 
+    /*点击去他人的个人主页*/
+    $('.clicklink').click(function () {
+      console.log("点击去他人的个人主页")
+      window.location.href = /*[[@{/user/profile/{id}(id=${blog.user.id})}]]*/"user/profile/29";
+      // $('#clicklink').load(/*[[@{/user/profile/{id}(id=${blog.user.id})}]]*/"user/profile/29");
+    });
+
     /* thumbsUp 点赞 */
-    $('#thumbsUp').click(function () {
-      $('#thumbsUp').load(/*[[@{}]]*/"")
+    $('#thumbs-up').click(function () {
+      $('#thumbs').load(/*[[@{/user/thumbs/{bid}(bid=${blog.id})}]]*/"user/thumbs/29");
     });
 
     /*显示qq*/
@@ -624,7 +622,10 @@
     /*当页面加载完成*/
     $(function () {
       $('#comment-container').load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/29");
-      $('#follow').load(/*[[@{/user/follow/{fid}/followJudge(fid=${blog.user.id})}]]*/"/user/follow/29/followJudge");
+      $('#thumbs').load(/*[[@{/user/thumbs/{bid}(bid=${blog.id})}]]*/"user/thumbs/29");
+      $('#follow').load(/*[[@{/user/follow/{fid}/followWhether(fid=${blog.user.id})}]]*/"/user/follow/29/followWhether");
+      // $('#follow').load(/*[[@{/user/follow/{fid}/followJudge(fid=${blog.user.id})}]]*/"user/follow/29/followJudge");
+
     });
 
     /*手机端右上角的小按钮点击展开隐藏*/
@@ -726,6 +727,11 @@
       }
     });
 
+    $('#follow').click(function () {
+      console.log(222)
+      $('#follow').load(/*[[@{/user/follow/{fid}(fid=${blog.user.id})}]]*/);
+    });
+
 
     $('#followDo2Undo').click(function () {
       let state = /*[[${state}]]*/ 20;
@@ -780,8 +786,6 @@
             }
           });
     });
-
-
 
 
 

@@ -29,6 +29,8 @@ public class Integral {
 
     private Long grade;//等级，到达100 就升级
 
+    private String img;//等级图标
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;//积分时间
 

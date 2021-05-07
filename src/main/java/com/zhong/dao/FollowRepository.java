@@ -16,19 +16,19 @@ public interface FollowRepository extends JpaRepository<Follow,Long> {
     Follow queryByUidAndFid(Long uid, Long fid);
 
     /**
-     * 根据 uid 查   我关注了谁  关注了  1 -> (1，69) : fid->uid
-     * @param uid
-     * @return
-     */
-    @Query(nativeQuery = true, value = "select count(1) from t_follow where fid = ?1 and state = 1")
-    int countFollowByUid(Long uid);
-
-    /**
-     * 根据uid 查   我被谁关注   关注者 （1，71，69） -> 1 : fid->uid
+     * 根据 uid 查   我关注了谁  关注了  1 -> (1，69) : uid->fid
      * @param uid
      * @return
      */
     @Query(nativeQuery = true, value = "select count(1) from t_follow where uid = ?1 and state = 1")
+    int countFollowByUid(Long uid);
+
+    /**
+     * 根据uid 查   我被谁关注   关注者 （1，71，69） -> 1 : uid->fid
+     * @param uid
+     * @return
+     */
+    @Query(nativeQuery = true, value = "select count(1) from t_follow where fid = ?1 and state = 1")
     int countFollowerByUid(Long uid);
 
 }

@@ -16,4 +16,6 @@ public interface IntegralService {
     String convertGrade(Long grade);
 
     SignInDataVO updateGradeAndIntegralByUid(Long uid);
+
+    void setGradeIcon(Integral integral);
 }

@@ -28,7 +28,7 @@ public interface CommentRepository extends JpaRepository<Comment,Long>, JpaSpeci
 // No property create found for type Comment!
 //    List<Comment> findByBlog_IdStartingWithAndParentCommentNull(Long blogId, Sort sort);
 
-    @Query(nativeQuery = true, value = "select * from t_comment where blog_id = :blogId and isnull(parent_comment_id) order by create_time desc")
+    @Query(nativeQuery = true, value = "select * from t_comment where blog_id = :blogId and isnull(parent_comment_id) order by create_time asc")
     List<Comment> findByBlog_IdAndParentCommentNull(@Param("blogId") Long blogId);
 }
     /*

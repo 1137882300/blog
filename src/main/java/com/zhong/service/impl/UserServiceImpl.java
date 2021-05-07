@@ -3,10 +3,7 @@ package com.zhong.service.impl;
 import com.zhong.dao.UserRepository;
 import com.zhong.po.Integral;
 import com.zhong.po.User;
-import com.zhong.service.BlogService;
-import com.zhong.service.FollowService;
-import com.zhong.service.IntegralService;
-import com.zhong.service.UserService;
+import com.zhong.service.*;
 import com.zhong.util.MD5Utils;
 import com.zhong.vo.UserInfoDataVO;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private ThumbsUpService thumbsUpService;
 
     @Override
     public User checkUser(String username, String password) {
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
         //关注者
         int follower = followService.countFollowerByUid(uid);
         //获得的点赞
-        //todo
+        int thumbs = thumbsUpService.countThumbsByUid(uid);
         //文章被阅读
         int views = blogService.countViews(uid);
         //积分值
@@ -121,8 +121,10 @@ public class UserServiceImpl implements UserService {
         UserInfoDataVO userInfoDataVO = UserInfoDataVO.builder()
                 .follow(follow)
                 .follower(follower)
+                .thumbs(thumbs)
                 .views(views)
                 .integral(integral.getIntegral())
+                .img(integral.getImg())
                 .build();
         log.warn("userInfoDataVO - > {}",userInfoDataVO);
         return userInfoDataVO;

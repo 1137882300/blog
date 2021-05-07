@@ -48,6 +48,25 @@ public class IndexController {
         return "search";
     }
 
+    /**
+     * 搜索的分页
+     * @param pageable
+     * @param model
+     * @return
+     */
+    @GetMapping(value = {"/search"})
+    public String search(@PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC)
+                                Pageable pageable, Model model){ //updateTime  与数据库的不一致可以，因为他是jpa的内置的
+        //分页的数据放到 model
+        model.addAttribute("page",blogService.listBlog(pageable));
+        model.addAttribute("types",typeService.listTypeTop(6));
+        model.addAttribute("tags",tagService.listTagTop(10));
+        model.addAttribute("recommend",blogService.listRecommendBlogTop(8));
+
+        return "search";
+    }
+
+
 
 
     @GetMapping("/blog/{id}")
