@@ -66,17 +66,17 @@
             <i class="dropdown icon"></i>
             <div class="menu">
               <div class="ui center aligned basic segment m-padded-tb-mini m-margin-top">
-                <div class="ui stackable equal width grid ">
+                <div class="ui stackable equal width grid " id="relation" th:fragment="relation">
                   <div class="column">
-                    <h3 class="text">63</h3>
+                    <h3 class="text" th:text="${userRelationDataVO != null} ? ${userRelationDataVO.blogTotal} : ''">63</h3>
                     <h3 class="text">文章</h3>
                   </div>
                   <div class="column">
-                    <h3 class="text">22</h3>
+                    <h3 class="text" th:text="${userRelationDataVO != null} ? ${userRelationDataVO.follow} : ''">22</h3>
                     <h3 class="text">关注</h3>
                   </div>
                   <div class="column">
-                    <h3 class="text">33</h3>
+                    <h3 class="text" th:text="${userRelationDataVO != null} ? ${userRelationDataVO.follower} : ''">33</h3>
                     <h3 class="text">粉丝</h3>
                   </div>
                   <div class="equal width row">
@@ -148,25 +148,7 @@
 
   </nav>
 
-<div class="ui vertical menu">
-  <div class="item">
-    <div class="menu">
-      <div class="item">
-        <span class="text small ">0</span>
-        <div class="text">文章</div>
-      </div>
-      <div class="item">
-        <span class="text small ">1</span>
-        <div class="text">关注</div>
-      </div>
-      <div class="item">
-        <span class="text small ">2</span>
-        <div class="text">粉丝</div>
-      </div>
-    </div>
-  </div>
 
-</div>
 
 <br>
 <br>
@@ -235,6 +217,11 @@
     $('#integral_grade').load(/*[[@{/integral/integral_grade}]]*/"/integral/integral_grade");
     $('#grade_integral').load(/*[[@{/integral/grade_integral}]]*/"/integral/grade_integral");
     $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+
+    $(function () {
+      $('#relation').load(/*[[@{/user/relation}]]*/"/user/relation");
+    })
+
   </script>
   <script>
     function signIn() {

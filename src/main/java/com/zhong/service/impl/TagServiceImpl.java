@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -30,6 +31,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag saveTag(Tag tag) {
+        tag.setCreateTime(new Date());
         return tagRepository.save(tag);
     }
 
@@ -113,6 +115,7 @@ public class TagServiceImpl implements TagService {
             throw new NotFoundException("不存在该标签");
         }
         BeanUtils.copyProperties(tag,t);
+        t.setUpdateTime(new Date());
         return tagRepository.save(t);
     }
 

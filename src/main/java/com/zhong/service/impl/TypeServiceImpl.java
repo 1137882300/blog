@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class TypeServiceImpl implements TypeService {
     @Transactional
     @Override
     public Type saveType(Type type) {
+        type.setCreateTime(new Date());
         return typeRepository.save(type);
     }
 
@@ -67,6 +69,7 @@ public class TypeServiceImpl implements TypeService {
             throw new NotFoundException("不存在该类型");
         }
         BeanUtils.copyProperties(type,t);
+        t.setUpdateTime(new Date());
         return typeRepository.save(t);
     }
     @Transactional

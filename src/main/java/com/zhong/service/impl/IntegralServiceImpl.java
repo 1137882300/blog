@@ -126,7 +126,7 @@ public class IntegralServiceImpl implements IntegralService {
     public SignInDataVO updateGradeAndIntegralByUid(Long uid) {
         int i = integralRepository.updateByUid(20,50,uid);
         if (i < 0){
-            new BizException();
+            log.info("");
         }
         //签到的此刻时间-到第二天的时间=时间间隔,间隔time才能再次签到
         Long time = getCurrentTime2EarlyMorning(System.currentTimeMillis());

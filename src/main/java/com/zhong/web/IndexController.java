@@ -29,7 +29,7 @@ public class IndexController {
     private TagService tagService;
 
     @GetMapping(value = {"/","/index"})
-    public String index(@PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC)
+    public String index(@PageableDefault(size = 13,sort = {"updateTime"},direction = Sort.Direction.DESC)
                         Pageable pageable, Model model){ //updateTime  与数据库的不一致可以，因为他是jpa的内置的
         //分页的数据放到 model
         model.addAttribute("page",blogService.listBlog(pageable));

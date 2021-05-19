@@ -2,10 +2,13 @@ package com.zhong.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.zhong.po.Blog;
 import com.zhong.po.Follow;
 import com.zhong.po.User;
 import com.zhong.result.JsonResult;
+import com.zhong.service.BlogService;
 import com.zhong.service.FollowService;
+import com.zhong.vo.UserRelationDataVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 /**
@@ -28,6 +32,9 @@ public class FollowController {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private BlogService blogService;
 
     /**
      * 关注(先存起来，个人主页的数据再去找)
@@ -132,6 +139,28 @@ public class FollowController {
         return "blog :: follow";//局部刷新
     }
 
+    /**
+     * 查询用户的博客、 关注、粉丝的数量
+     * @param session
+     * @param model
+     * @return
+     */
+    @GetMapping("/user/relation")
+    public String relation(HttpSession session, Model model){
+        User user = (User) session.getAttribute("user");
+        Long uid = user.getId();
+        List<Blog> blogList = blogService.getBlogByUid(uid);
+        int follow = followService.countFollowByUid(uid);
+        int follower = followService.countFollowerByUid(uid);
+        UserRelationDataVO userRelationDataVO = UserRelationDataVO.builder()
+                .blogTotal(blogList.size())
+                .follow(follow)
+                .follower(follower)
+                .build();
+        log.warn("UserRelationDataVO -> {}", userRelationDataVO);
+        model.addAttribute("userRelationDataVO",userRelationDataVO);
+        return "_fragments :: relation";
+    }
 
 
 
